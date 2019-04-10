@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Marina Sidorkina](https://up.htmlacademy.ru/php/9/user/185248).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Андрианов](https://htmlacademy.ru/profile/id1045171).
 
 ---
 
