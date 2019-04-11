@@ -84,6 +84,16 @@ $user_name = 'Марина'; // укажите здесь ваше имя
             </li>
         </ul>
     </section>
+    <section class="users-list">
+    <h3>Список пользователей</h3>
+        <?php
+        echo '<ul>';
+        foreach (array("user_1", "user_2", "user_3", "user_4") as $value) {
+            echo "<li>$value</li>";
+        }
+        echo '</ul>';
+        ?>
+    </section>
 </main>
 </div>
 
