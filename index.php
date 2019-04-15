@@ -9,37 +9,43 @@ $adverts = [
         "title" => "2014 Rossignol District Snowboard",
         "category" => "Доски и лыжи",
         "price" => "10999",
-        "url" => "img/lot-1.jpg"
+        "url" => "img/lot-1.jpg",
+        "activation" => 1
     ],
     [
         "title" => "DC Ply Mens 2016/2017 Snowboard",
         "category" => "Доски и лыжи",
         "price" => "159999",
-        "url" => "img/lot-2.jpg"
+        "url" => "img/lot-2.jpg",
+        "activation" => 0
     ],
     [
         "title" => "Крепления Union Contact Pro 2015 года размер L/XL",
         "category" => "Крепления",
         "price" => "8000",
-        "url" => "img/lot-3.jpg"
+        "url" => "img/lot-3.jpg",
+        "activation" => 1
     ],
     [
         "title" => "Ботинки для сноуборда DC Mutiny Charocal",
         "category" => "Ботинки",
         "price" => "10999",
-        "url" => "img/lot-4.jpg"
+        "url" => "img/lot-4.jpg",
+        "activation" => 0
     ],
     [
         "title" => "Куртка для сноуборда DC Mutiny Charocal",
         "category" => "Одежда",
         "price" => "7500",
-        "url" => "img/lot-5.jpg"
+        "url" => "img/lot-5.jpg",
+        "activation" => 1
     ],
     [
         "title" => "Маска Oakley Canopy",
         "category" => "Разное",
         "price" => "5400",
-        "url" => "img/lot-6.jpg"
+        "url" => "img/lot-6.jpg",
+        "activation" => 0
     ]
 ];
 
@@ -113,6 +119,7 @@ function formatPrice($number) {
         </div>
         <ul class="lots__list">
         <?php foreach ($adverts as $value): ?>
+        <?php if ($value["activation"]): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
                     <img src="<?=$value["url"]; ?>" width="350" height="260" alt="">
@@ -131,6 +138,7 @@ function formatPrice($number) {
                     </div>
                 </div>
             </li>
+        <?php endif; ?>
         <?php endforeach; ?>
         </ul>
     </section>
