@@ -48,7 +48,7 @@ function formatPrice($number) {
    if ($result >= 1000) {
        $result = number_format($result, 0, "", " ");
    }
-   return $result .= "<b class='rub'>р</b>";
+   return $result . "<b class='rub'>р</b>";
 }
 ?>
 <!DOCTYPE html>
