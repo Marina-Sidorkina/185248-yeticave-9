@@ -1,10 +1,4 @@
 <?php
-$title = "Главная страница";
-$is_auth = rand(0, 1);
-$user_name = 'Марина';
-
-$categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
-
 $adverts = [
     [
         "title" => "2014 Rossignol District Snowboard",
