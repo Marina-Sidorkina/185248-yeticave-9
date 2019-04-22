@@ -27,8 +27,8 @@
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost"><?=htmlspecialchars(formatPrice($value["price"])); ?><b class='rub'>р</b></span>
                     </div>
-                    <div class="lot__timer timer">
-                        12:23
+                    <div class="lot__timer timer <?=$expiringMark; ?>">
+                        <?=$hours_left; ?> ч <?=$minutes_left; ?> мин
                     </div>
                 </div>
             </div>
