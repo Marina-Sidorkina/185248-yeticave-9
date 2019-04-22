@@ -27,13 +27,7 @@
                         <span class="lot__amount">Стартовая цена</span>
                         <span class="lot__cost"><?=htmlspecialchars(formatPrice($value["price"])); ?><b class='rub'>р</b></span>
                     </div>
-                    <?php
-                          $timeLeft = $value["expirationDate"] - time();
-                          $hours_left = floor($timeLeft / 3600);
-                          $minutes_left = floor(($timeLeft % 3600) / 60);
-                          $isExpiringMark = ($hours_left <= 1) ? "timer--finishing" : "";
-                    ?>
-                    <div class="lot__timer timer <?=$isExpiringMark; ?>">
+                    <div class="lot__timer timer <?=$expiringMark; ?>">
                         <?=$hours_left; ?> ч <?=$minutes_left; ?> мин
                     </div>
                 </div>
