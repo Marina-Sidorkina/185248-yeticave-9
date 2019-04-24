@@ -5,17 +5,17 @@ USE yeti;
 
 CREATE TABLE categories (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  title CHAR NOT NULL UNIQUE,
-  char_code CHAR NOT NULL UNIQUE
+  title CHAR(200) NOT NULL UNIQUE,
+  char_code CHAR(200) NOT NULL UNIQUE
 );
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   registered_at TIMESTAMP NOT NULL,
-  email CHAR NOT NULL UNIQUE,
-  name CHAR NOT NULL UNIQUE,
-  password CHAR NOT NULL,
-  avatar_url CHAR,
+  email CHAR(200) NOT NULL UNIQUE,
+  name CHAR(200) NOT NULL UNIQUE,
+  password CHAR(200) NOT NULL,
+  avatar_url CHAR(200),
   contacts TEXT
 );
 
@@ -31,10 +31,10 @@ CREATE TABLE lots (
   id INT AUTO_INCREMENT PRIMARY KEY,
   created_at TIMESTAMP NOT NULL,
   expired_at TIMESTAMP NOT NULL,
-  title  CHAR NOT NULL,
+  title  CHAR(200) NOT NULL,
   description TEXT,
   price INT NOT NULL,
-  picture_url CHAR,
+  picture_url CHAR(200),
   bet_step INT,
   user_id INT NOT NULL,
   category_id INT NOT NULL,
