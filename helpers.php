@@ -150,3 +150,15 @@ function formatPrice($number) {
    }
    return $result;
 }
+
+function getTimeParams($expirationDate) {
+  $timeLeft = strtotime($expirationDate) - time();
+  $hours_left = floor($timeLeft / 3600);
+  $minutes_left = floor(($timeLeft % 3600) / 60);
+  $expiringMark = ($hours_left <= 1) ? "timer--finishing" : null;
+  return [
+      "hours_left" => $hours_left,
+      "minutes_left" => $minutes_left,
+      "expiringMark" => $expiringMark
+  ];
+}
