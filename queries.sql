@@ -70,9 +70,9 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
     5000,
     2,
     4,
-    1,
-    '2019-01-05 07:30',
-    '2019-05-05 07:30'
+    NULL,
+    '2019-04-05 07:30',
+    '2019-07-05 07:30'
   ),
   (
     'Маска Oakley Canopy',
