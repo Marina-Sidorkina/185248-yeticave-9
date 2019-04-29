@@ -3,6 +3,10 @@ require_once "helpers.php";
 require_once "data/layout.php";
 require_once "mysql/requests.php";
 
+$categories = getData()["categories"];
+
+$content = include_template(getData()["template"], getData()["params"]);
+
 $layout = include_template("layout.php", [
     "content" => $content,
     "title" => $title,
