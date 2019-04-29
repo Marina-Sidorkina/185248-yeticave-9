@@ -34,6 +34,7 @@ function getData() {
       $categories = getArray($categoriesLink);
     }
     else {
+      $template = "error.php";
       $params = ["error" => mysqli_error($link)];
     }
 
