@@ -62,7 +62,8 @@ function getActiveLots() {
     }
     return [
       "params" => $params,
-      "template" => $template
+      "template" => $template,
+      "categories" => $categories
     ];
   }
 }

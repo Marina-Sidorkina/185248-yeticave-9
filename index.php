@@ -4,7 +4,7 @@ require_once "data/layout.php";
 require_once "mysql/requests.php";
 
 $main_block_class = "container";
-$categories = getActiveLots()["params"]["categories"];
+$categories = getActiveLots()["categories"];
 $content = include_template(getActiveLots()["template"], getActiveLots()["params"]);
 
 $layout = include_template("layout.php", [
