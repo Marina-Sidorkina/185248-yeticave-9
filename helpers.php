@@ -162,3 +162,8 @@ function getTimeParams($expirationDate) {
       "expiringMark" => $expiringMark
   ];
 }
+
+function checkInterval($date) {
+  $interval = date_diff(date_create("today"), date_create($date));
+  return ($interval->format("%a")) >= 1;
+}

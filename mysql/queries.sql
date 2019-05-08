@@ -48,7 +48,7 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
     2,
     NULL,
     '2019-04-05 07:30',
-    '2019-05-05 07:30'
+    '2019-07-05 07:30'
   ),
   (
     'Ботинки для сноуборда DC Mutiny Charocal',
@@ -84,7 +84,7 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
     6,
     NULL,
     '2019-04-05 07:30',
-    '2019-05-05 07:30'
+    '2019-07-05 07:30'
   );
 
 /* Добавление ставок */
