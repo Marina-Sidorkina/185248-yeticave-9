@@ -76,7 +76,6 @@ function getLotById($id) {
   }
 }
 
-
 function getCategoryIdByName($link, $name) {
   $sql = 'SELECT * FROM categories c WHERE c.title = "'. $name .'"';
   $result = mysqli_query($link, $sql);
@@ -84,34 +83,34 @@ function getCategoryIdByName($link, $name) {
 }
 
 function addNewLot($lot) {
-    $link = createLink();
-    $category = getCategoryIdByName($link, $lot['category']);
-    $user_id = 1;
+  $link = createLink();
+  $category = getCategoryIdByName($link, $lot['category']);
+  $user_id = 1;
 
-    $sql = "INSERT INTO lots (
-      created_at,
-      winner_id,
-      user_id,
-      category_id,
-      expired_at,
-      title,
-      description,
-      picture_url,
-      price,
-      bet_step
-    ) VALUES (
-      NOW(), NULL, ?, ?, ?, ?, ?, ?, ?, ?
-    )";
-    $stmt = db_get_prepare_stmt($link, $sql, [
-        $user_id,
-        $category['id'],
-        $lot['lot-date'],
-        $lot['lot-name'],
-        $lot['message'],
-        $lot['lot-img'],
-        $lot['lot-rate'],
-        $lot['lot-step']
-    ]);
-    mysqli_stmt_execute($stmt);
-    return mysqli_insert_id($link);
+  $sql = "INSERT INTO lots (
+    created_at,
+    winner_id,
+    user_id,
+    category_id,
+    expired_at,
+    title,
+    description,
+    picture_url,
+    price,
+    bet_step
+  ) VALUES (
+    NOW(), NULL, ?, ?, ?, ?, ?, ?, ?, ?
+  )";
+  $stmt = db_get_prepare_stmt($link, $sql, [
+    $user_id,
+    $category,
+    $lot["lot-date"],
+    $lot["lot-name"],
+    $lot["message"],
+    $lot["lot-img"],
+    $lot["lot-rate"],
+    $lot["lot-step"]
+  ]);
+  mysqli_stmt_execute($stmt);
+  return mysqli_insert_id($link);
 }
