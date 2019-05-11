@@ -19,16 +19,11 @@ if ($lot) {
   $error = true;
 };
 
-$layout = include_template("layout.php", [
-    "content" => $content,
-    "title" => $title,
-    "is_auth" => $is_auth,
-    "user_name" => $user_name,
-    "categories" => $categories
-]);
+$layout = getLayout($content, $title, $is_auth, $user_name, $categories);
 
 if ($error) {
   header("HTTP/ 1.1 404 Not found");
 }
+
 print($layout);
 ?>

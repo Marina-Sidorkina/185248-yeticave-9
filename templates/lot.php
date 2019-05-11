@@ -12,7 +12,7 @@
   <div class="lot-item__content">
     <div class="lot-item__left">
       <div class="lot-item__image">
-        <img src="../img/lot-image.jpg" width="730" height="548" alt="Сноуборд">
+        <img src="<?=htmlspecialchars($lot["url"]); ?>" width="730" height="548" alt="Сноуборд">
       </div>
       <p class="lot-item__category">Категория: <span><?=htmlspecialchars($lot["category"]); ?></span></p>
       <p class="lot-item__description"><?=htmlspecialchars($lot["description"]); ?></p>
