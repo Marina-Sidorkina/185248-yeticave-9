@@ -1,16 +1,16 @@
 <?php
-function createLink() {
+function create_link() {
   $link = mysqli_connect("localhost", "root", "", "yeti");
   mysqli_set_charset($link, "utf8");
   return $link;
 }
 
-function getCategoriesLink($link) {
+function get_categories_link($link) {
   $sql = 'SELECT id, title, char_code FROM categories';
   return mysqli_query($link, $sql);
 }
 
-function getActiveLotsLink($link) {
+function get_active_lots_link($link) {
   $sql = 'SELECT c.title "category", l.id "id", l.title "title", l.description "description", l.price "price", l.bet_step "step", l.picture_url "url", l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE NOW() < l.expired_at AND l.winner_id IS NULL
@@ -18,37 +18,37 @@ function getActiveLotsLink($link) {
   return mysqli_query($link, $sql);
 }
 
-function getLotByIdLink($link, $id) {
+function get_lot_by_id_link($link, $id) {
   $sql = 'SELECT c.title "category", l.id "id", l.title "title", l.description "description", l.price "price", l.bet_step "step", l.picture_url "url", l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE l.id = "'. $id .'"';
   return mysqli_query($link, $sql);
 }
 
-function getArray($result) {
+function get_array($result) {
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function getCategories($link) {
+function get_categories($link) {
   if ($link) {
-    $categoriesLink = getCategoriesLink($link);
+    $categoriesLink = get_categories_link($link);
   }
   if ($categoriesLink) {
-    return getArray($categoriesLink);
+    return get_array($categoriesLink);
   }
 };
 
-function getActiveLots() {
-  $link = createLink();
+function get_active_lots() {
+  $link = create_link();
   if (!$link) {
     $template = "error.php";
     $params = ["error" => mysqli_connect_error()];
   }
   else {
-    $lotsLink = getActiveLotsLink($link);
-    $categories = getCategories($link);
+    $lotsLink = get_active_lots_link($link);
+    $categories = get_categories($link);
     if ($lotsLink and $categories) {
-      $lots = getArray($lotsLink);
+      $lots = get_array($lotsLink);
       $template = "main.php";
       $params = ["categories" => $categories, "lots" => $lots];
     }
@@ -64,11 +64,11 @@ function getActiveLots() {
   }
 }
 
-function getLotById($id) {
-  $link = createLink();
+function get_lot_by_id($id) {
+  $link = create_link();
   if ($link) {
-    $lotLink = getLotByIdLink($link, $id);
-    $categories = getCategories($link);
+    $lotLink = get_lot_by_id_link($link, $id);
+    $categories = get_categories($link);
     if ($lotLink and $categories) {
       $lot = mysqli_fetch_array($lotLink, MYSQLI_ASSOC);
       return ["categories" => $categories, "lot" => $lot];
@@ -76,15 +76,15 @@ function getLotById($id) {
   }
 }
 
-function getCategoryIdByName($link, $name) {
+function get_category_id_by_name($link, $name) {
   $sql = 'SELECT * FROM categories c WHERE c.title = "'. $name .'"';
   $result = mysqli_query($link, $sql);
   return mysqli_fetch_array($result, MYSQLI_ASSOC)["id"];
 }
 
-function addNewLot($lot) {
-  $link = createLink();
-  $category = getCategoryIdByName($link, $lot['category']);
+function add_new_lot($lot) {
+  $link = create_link();
+  $category = get_category_id_by_name($link, $lot['category']);
   $user_id = 1;
 
   $sql = "INSERT INTO lots (
@@ -113,4 +113,31 @@ function addNewLot($lot) {
   ]);
   mysqli_stmt_execute($stmt);
   return mysqli_insert_id($link);
+}
+
+function check_user($form) {
+  $link = create_link();
+  $email = mysqli_real_escape_string($link, $form['email']);
+  $sql = 'SELECT * FROM users u
+            WHERE u.email = "'. $email .'"';
+  $result = mysqli_query($link, $sql);
+  $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : null;
+  return $user;
+}
+
+function add_new_user($form) {
+  $link = create_link();
+  $password = password_hash($form["password"], PASSWORD_DEFAULT);
+  $sql = "INSERT INTO users (
+    registered_at, name, email, password, contacts
+  ) VALUES (
+    NOW(), ?, ?, ?, ?
+  )";
+  $stmt = db_get_prepare_stmt($link, $sql, [
+    $form["name"],
+    $form["email"],
+    $password,
+    $form["message"]
+  ]);
+  mysqli_stmt_execute($stmt);
 }

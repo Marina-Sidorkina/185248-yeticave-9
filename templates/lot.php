@@ -19,8 +19,8 @@
     </div>
     <div class="lot-item__right">
       <div class="lot-item__state">
-        <div class="lot-item__timer timer <?=getTimeParams($lot["expirationDate"])["expiringMark"]; ?>">
-          <?=getTimeParams($lot["expirationDate"])["hours_left"]; ?>:<?=getTimeParams($lot["expirationDate"])["minutes_left"]; ?>
+        <div class="lot-item__timer timer <?=get_time_params($lot["expirationDate"])["expiration_mark"]; ?>">
+          <?=get_time_params($lot["expirationDate"])["hours_left"]; ?>:<?=get_time_params($lot["expirationDate"])["minutes_left"]; ?>
         </div>
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">
