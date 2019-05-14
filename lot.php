@@ -3,10 +3,16 @@ require_once "helpers.php";
 require_once "data/layout.php";
 require_once "mysql/requests.php";
 
+$title;
+$lot;
+$categories;
+$content;
+$error;
+
 if (isset($_GET["lot_id"])) {
   $id = (int) $_GET["lot_id"];
-  $lot = getLotById($id)["lot"];
-  $categories = getLotById($id)["categories"];
+  $lot = get_lot_by_id($id)["lot"];
+  $categories = get_lot_by_id($id)["categories"];
 };
 
 if ($lot) {
@@ -19,7 +25,7 @@ if ($lot) {
   $error = true;
 };
 
-$layout = getLayout($content, $title, $is_auth, $user_name, $categories);
+$layout = get_layout($content, $title, $is_auth, $user_name, $categories);
 
 if ($error) {
   header("HTTP/ 1.1 404 Not found");

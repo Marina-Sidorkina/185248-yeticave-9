@@ -25,10 +25,10 @@
                 <div class="lot__state">
                     <div class="lot__rate">
                         <span class="lot__amount">Стартовая цена</span>
-                        <span class="lot__cost"><?=htmlspecialchars(formatPrice($value["price"])); ?><b class='rub'>р</b></span>
+                        <span class="lot__cost"><?=htmlspecialchars(format_price($value["price"])); ?><b class='rub'>р</b></span>
                     </div>
-                    <div class="lot__timer timer <?=getTimeParams($value["expirationDate"])["expiringMark"]; ?>">
-                        <?=getTimeParams($value["expirationDate"])["hours_left"]; ?> ч <?=getTimeParams($value["expirationDate"])["minutes_left"]; ?> мин
+                    <div class="lot__timer timer <?=get_time_params($value["expirationDate"])["expiration_mark"]; ?>">
+                        <?=get_time_params($value["expirationDate"])["hours_left"]; ?> ч <?=get_time_params($value["expirationDate"])["minutes_left"]; ?> мин
                     </div>
                 </div>
             </div>

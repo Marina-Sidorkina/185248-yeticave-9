@@ -3,12 +3,12 @@ require_once "helpers.php";
 require_once "data/layout.php";
 require_once "mysql/requests.php";
 
-$link = createLink();
-$categories = getCategories($link);
+$link = create_link();
+$categories = get_categories($link);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $lot = $_POST;
-  $errors = checkLotData($lot);
+  $errors = check_lot_data($lot);
 
   if (!empty($_FILES["lot-img"]["name"])) {
     $tmp_name = $_FILES["lot-img"]["tmp_name"];
@@ -27,17 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if (!empty($errors)) {
     $content = include_template("add.php", ["categories" => $categories, "errors" => $errors, "lot" => $lot]);
     $title = "Ошибка";
-    $layout = getLayout($content, $title, $is_auth, $user_name, $categories);
+    $layout = get_layout($content, $title, $is_auth, $user_name, $categories);
     print($layout);
   } else {
-    $id = addNewLot($lot);
+    $id = add_new_lot($lot);
     header("Location: lot.php?lot_id=" . $id);
   };
 }
 else {
   $content = include_template("add.php", ["categories" => $categories]);
   $title = "Добавить лот";
-  $layout = getLayout($content, $title, $is_auth, $user_name, $categories);
+  $layout = get_layout($content, $title, $is_auth, $user_name, $categories);
   print($layout);
 }
 ?>

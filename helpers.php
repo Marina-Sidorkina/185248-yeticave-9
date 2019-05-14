@@ -143,7 +143,7 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
-function getLayout($content, $title, $is_auth, $user_name, $categories) {
+function get_layout($content, $title, $is_auth, $user_name, $categories) {
   return $layout = include_template("layout.php", [
     "content" => $content,
     "title" => $title,
@@ -153,7 +153,7 @@ function getLayout($content, $title, $is_auth, $user_name, $categories) {
   ]);
 };
 
-function formatPrice($number) {
+function format_price($number) {
    $result = ceil($number);
    if ($result >= 1000) {
        $result = number_format($result, 0, "", " ");
@@ -161,7 +161,7 @@ function formatPrice($number) {
    return $result;
 }
 
-function getTimeParams($expirationDate) {
+function get_time_params($expirationDate) {
   $timeLeft = strtotime($expirationDate) - time();
   $hours_left = floor($timeLeft / 3600);
   $minutes_left = floor(($timeLeft % 3600) / 60);
@@ -169,24 +169,28 @@ function getTimeParams($expirationDate) {
   return [
       "hours_left" => $hours_left,
       "minutes_left" => $minutes_left,
-      "expiringMark" => $expiringMark
+      "expiration_mark" => $expiringMark
   ];
 }
 
-function checkInterval($date) {
+function check_interval($date) {
   $interval = date_diff(date_create("today"), date_create($date));
   return ($interval->format("%a")) >= 1;
 }
 
-function checkLotData($lot) {
+function check_required_fields($fields, $form) {
   $errors = [];
-  $required_fields = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];
-
-  foreach ($required_fields as $key) {
-    if (empty($lot[$key])) {
+  foreach ($fields as $key) {
+    if (empty($form[$key])) {
       $errors[$key] = "Это поле надо заполнить";
     }
   }
+  return $errors;
+}
+
+function check_lot_data($lot) {
+  $required_fields = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];
+  $errors = check_required_fields($required_fields, $lot);
 
   if ($lot["category"] == "Выберите категорию") {
     $errors["category"] = "Выберите категорию";
@@ -196,7 +200,7 @@ function checkLotData($lot) {
     $errors["lot-date"] = "Добавьте дату в формате ГГГГ-ММ-ДД";
   }
 
-  if (!checkInterval($lot["lot-date"])) {
+  if (!check_interval($lot["lot-date"])) {
     $errors["lot-date"] = "Добавьте дату больше текущей даты";
   }
 
