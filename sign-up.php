@@ -3,8 +3,6 @@ require_once "helpers.php";
 require_once "data/layout.php";
 require_once "mysql/requests.php";
 
-session_start();
-
 $title;
 $content;
 $errors = [];
