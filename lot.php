@@ -1,18 +1,21 @@
 <?php
 require_once "helpers.php";
-require_once "data/layout.php";
 require_once "mysql/requests.php";
+session_start();
 
 $title;
 $lot;
-$categories;
 $content;
 $error;
+
+$link = create_link();
+$categories = get_categories($link);
+$user_name = set_user();
+check_categories($categories, $user_name);
 
 if (isset($_GET["lot_id"])) {
   $id = (int) $_GET["lot_id"];
   $lot = get_lot_by_id($id)["lot"];
-  $categories = get_lot_by_id($id)["categories"];
 };
 
 if ($lot) {
@@ -21,11 +24,11 @@ if ($lot) {
   $error = false;
 } else {
   $content = include_template("404.php", ["categories" => $categories]);
-  $title = $error_title;
+  $title = "Страница не найдена";
   $error = true;
 };
 
-$layout = get_layout($content, $title, $is_auth, $user_name, $categories);
+$layout = get_layout($content, $title, $categories, $user_name);
 
 if ($error) {
   header("HTTP/ 1.1 404 Not found");

@@ -34,7 +34,8 @@ function get_categories($link) {
     $categoriesLink = get_categories_link($link);
   }
   if ($categoriesLink) {
-    return get_array($categoriesLink);
+    $result = get_array($categoriesLink) ?? [];
+    return $result;
   }
 };
 
@@ -46,7 +47,7 @@ function get_active_lots() {
   }
   else {
     $lotsLink = get_active_lots_link($link);
-    $categories = get_categories($link);
+    $categories = get_categories($link) ?? null;
     if ($lotsLink and $categories) {
       $lots = get_array($lotsLink);
       $template = "main.php";
@@ -58,8 +59,7 @@ function get_active_lots() {
     }
     return [
       "params" => $params,
-      "template" => $template,
-      "categories" => $categories
+      "template" => $template
     ];
   }
 }

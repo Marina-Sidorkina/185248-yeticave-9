@@ -143,11 +143,10 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
-function get_layout($content, $title, $is_auth, $user_name, $categories) {
+function get_layout($content, $title, $categories, $user_name) {
   return $layout = include_template("layout.php", [
     "content" => $content,
     "title" => $title,
-    "is_auth" => $is_auth,
     "user_name" => $user_name,
     "categories" => $categories
   ]);
@@ -213,4 +212,23 @@ function check_lot_data($lot) {
   }
 
   return $errors;
+}
+
+function check_categories($categories, $user_name) {
+  if (!$categories) {
+    $content = include_template("error.php", ["error" => "Извините, в настоящий момент страница недоступна..."]);
+    $title = "Ошибка";
+    $layout = get_layout($content, $title, $categories, $user_name);
+    print($layout);
+    exit();
+  }
+}
+
+function set_user() {
+  if ($_SESSION) {
+    $user_name = $_SESSION["user"]["name"];
+  } else {
+    $user_name = null;
+  }
+  return $user_name;
 }

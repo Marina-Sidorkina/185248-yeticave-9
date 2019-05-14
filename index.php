@@ -1,16 +1,18 @@
 <?php
 require_once "helpers.php";
-require_once "data/layout.php";
 require_once "mysql/requests.php";
+session_start();
 
 $main_block_class = "container";
-$categories = get_active_lots()["categories"];
+$link = create_link();
+$categories = get_categories($link);
+$user_name = set_user($_SESSION);
 $content = include_template(get_active_lots()["template"], get_active_lots()["params"]);
+$title = "Главная страница";
 
 $layout = include_template("layout.php", [
     "content" => $content,
-    "title" => $index_title,
-    "is_auth" => $is_auth,
+    "title" => $title,
     "user_name" => $user_name,
     "categories" => $categories,
     "main_block_class" => $main_block_class
