@@ -1,16 +1,15 @@
 <?php
 require_once "helpers.php";
-require_once "data/layout.php";
 require_once "mysql/requests.php";
+session_start();
 
-$title;
-$content;
-$errors = [];
-
+$user_name = set_user();
 $link = create_link();
 $categories = get_categories($link);
+check_categories($categories, $user_name);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $errors = [];
   $form = $_POST;
   $required_fields = ["email", "password", "name", "message"];
   $errors = check_required_fields($required_fields, $form);
@@ -31,14 +30,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     $content = include_template("sign-up.php", ["categories" => $categories, "errors" => $errors, "form" => $form]);
     $title = "Ошибка";
-    $layout = get_layout($content, $title, $is_auth, $user_name, $categories);
+    $layout = get_layout($content, $title, $categories, $user_name);
     print($layout);
   }
 
 } else {
   $content = include_template("sign-up.php", ["categories" => $categories]);
   $title = "Регистрация";
-  $layout = get_layout($content, $title, $is_auth, $user_name, $categories);
+  $layout = get_layout($content, $title, $categories, $user_name);
   print($layout);
 }
 ?>
