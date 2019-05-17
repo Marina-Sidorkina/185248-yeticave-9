@@ -203,12 +203,12 @@ function check_lot_data($lot) {
     $errors["lot-date"] = "Добавьте дату больше текущей даты";
   }
 
-  if (!(is_numeric($lot["lot-rate"])) or (((int) $lot["lot-rate"]) <= 0)) {
+  if (!(is_numeric($lot["lot-rate"])) or ($lot["lot-rate"] <= 0)) {
     $errors["lot-rate"] = "Содержимое поля должно быть числом больше нуля";
   }
 
-  if (!(is_numeric($lot["lot-step"])) or (((int) $lot["lot-step"]) <= 0)) {
-    $errors["lot-step"] = "Содержимое поля должно быть целым числом больше ноля";
+  if (!(is_numeric($lot["lot-step"])) or ($lot["lot-step"] <= 0) or !(filter_var($lot["lot-step"], FILTER_VALIDATE_INT))) {
+    $errors["lot-step"] = "Содержимое поля должно быть целым числом больше нуля";
   }
 
   return $errors;
@@ -231,4 +231,11 @@ function set_user() {
     $user_name = null;
   }
   return $user_name;
+}
+
+function get_bet_block_status($lot, $all_bets) {
+  return isset($_SESSION["user"])
+      and (strtotime($lot["expirationDate"]) > time())
+      and $lot["user_id"] !== $_SESSION["user"]["id"]
+      and ($all_bets[count($all_bets) - 1]["user"]) !== ($_SESSION["user"]["name"]);
 }
