@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $tmp_name = $_FILES["lot-img"]["tmp_name"];
     $path = $_FILES["lot-img"]["name"];
     $file_type = mime_content_type($tmp_name);
-    if ($file_type !== "image/png" and $file_type !== "image/jpeg"){
-      $errors["lot-img"] = "Изображение должно быть в формате png или jpeg";
+    if ($file_type !== "image/png" and $file_type !== "image/jpeg" and $file_type !== "image/jpg"){
+      $errors["lot-img"] = "Изображение должно быть в формате png, jpeg, или jpg";
     } else {
       move_uploaded_file($tmp_name, 'uploads/' . $path);
       $lot["lot-img"] = "uploads/" . $path;
