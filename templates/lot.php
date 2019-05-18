@@ -49,7 +49,7 @@
             <tr class="history__item">
               <td class="history__name"><?=$value["user"]; ?></td>
               <td class="history__price"><?=$value["price"]; ?></td>
-              <td class="history__time"><?=$value["created_at"]; ?></td>
+              <td class="history__time"><?=get_formatted_time($value["created_at"]); ?></td>
             </tr>
           <?php endforeach; ?>
         </table>

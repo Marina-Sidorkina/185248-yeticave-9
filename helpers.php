@@ -164,10 +164,12 @@ function get_time_params($expirationDate) {
   $timeLeft = strtotime($expirationDate) - time();
   $hours_left = floor($timeLeft / 3600);
   $minutes_left = floor(($timeLeft % 3600) / 60);
+  $seconds_left = floor(($timeLeft % 3600) % 60);
   $expiringMark = ($hours_left <= 1) ? "timer--finishing" : null;
   return [
       "hours_left" => $hours_left,
       "minutes_left" => $minutes_left,
+      "seconds_left" => $seconds_left,
       "expiration_mark" => $expiringMark
   ];
 }
@@ -238,4 +240,22 @@ function get_bet_block_status($lot, $all_bets) {
       and (strtotime($lot["expirationDate"]) > time())
       and $lot["user_id"] !== $_SESSION["user"]["id"]
       and ($all_bets[count($all_bets) - 1]["user"]) !== ($_SESSION["user"]["name"]);
+}
+
+function get_formatted_time($bet_time) {
+  $result;
+  $difference = time() - strtotime($bet_time);
+  if ($difference < 86400 and $difference >= 3600) {
+    $hours = floor($difference / 3600);
+    $result = $hours . " " . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+  } else if ($difference < 3600 and $difference >= 60) {
+    $minutes = floor($difference / 60);
+    $result = $minutes . " " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+  } else if ($difference < 60) {
+    $seconds = floor($difference);
+    $result = $seconds . " " . get_noun_plural_form($seconds, "секунду", "секунды", "секунд") . " назад";
+  } else {
+    $result = date("d.m.y", strtotime($bet_time)) . " в " . date("H:i", strtotime($bet_time));
+  }
+  return $result;
 }

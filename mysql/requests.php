@@ -170,3 +170,14 @@ function get_bets_by_lot($lot_id) {
   $bets = get_array($result) ?? [];
   return $bets;
 }
+
+function get_user_bets($user_id) {
+  $link = create_link();
+  $sql = 'SELECT l.title "lot_title", l.id "lot_id", l.picture_url "url", l.winner_id "winner_id", l.expired_at "expired_at", c.title "category", b.price "price", b.created_at "bet_date" FROM bets b
+    JOIN lots l ON b.lot_id = l.id
+    JOIN categories c ON l.category_id = c.id
+    WHERE b.user_id = "'. $user_id .'"
+    ORDER BY b.created_at DESC';
+  $result = mysqli_query($link, $sql);
+  return get_array($result);
+}
