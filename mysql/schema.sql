@@ -43,3 +43,4 @@ CREATE TABLE lots (
 
 CREATE UNIQUE INDEX user_name ON users(name);
 CREATE INDEX lot_title ON lots(title);
+CREATE FULLTEXT INDEX search ON lots(title, description);

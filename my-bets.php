@@ -15,4 +15,3 @@ $title = "Мои ставки";
 $layout = get_layout($content, $title, $categories, $user_name);
 
 print($layout);
-?>

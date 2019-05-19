@@ -40,4 +40,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $layout = get_layout($content, $title, $categories, $user_name);
   print($layout);
 }
-?>

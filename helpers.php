@@ -259,3 +259,14 @@ function get_formatted_time($bet_time) {
   }
   return $result;
 }
+
+function get_lot_amount_block_text($lot_id) {
+  $text;
+  $bets = get_bets_by_lot($lot_id);
+  if ($bets) {
+    $text = count($bets) . " " . get_noun_plural_form(count($bets), "ставка", "ставки", "ставок");
+  } else {
+    $text = "Стартовая цена";
+  }
+  return $text;
+}

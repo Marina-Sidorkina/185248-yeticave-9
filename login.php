@@ -10,7 +10,7 @@ check_categories($categories, $user_name);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $errors = [];
-  $password_validity;
+  $password_validity = false;
   $form = $_POST;
   $required_fields = ["email", "password"];
   $errors = check_required_fields($required_fields, $form);
@@ -47,4 +47,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     print($layout);
   }
 }
-?>

@@ -67,4 +67,3 @@ if ($error) {
 }
 
 print($layout);
-?>

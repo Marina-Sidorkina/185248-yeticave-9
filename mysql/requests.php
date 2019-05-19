@@ -181,3 +181,15 @@ function get_user_bets($user_id) {
   $result = mysqli_query($link, $sql);
   return get_array($result);
 }
+
+function get_search_result($search) {
+  $link = create_link();
+  $sql = 'SELECT c.title "category", l.id "id", l.title "title", l.description "description", l.price "price", l.bet_step "step", l.picture_url "url", l.expired_at "expirationDate" FROM lots l
+    JOIN categories c ON l.category_id = c.id
+    WHERE MATCH(l.title, l.description) AGAINST(?) AND NOW() < l.expired_at AND l.winner_id IS NULL
+    ORDER BY l.created_at DESC';
+  $stmt = db_get_prepare_stmt($link, $sql, [$search]);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
