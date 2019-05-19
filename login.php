@@ -10,7 +10,7 @@ check_categories($categories, $user_name);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $errors = [];
-  $password_validity;
+  $password_validity = false;
   $form = $_POST;
   $required_fields = ["email", "password"];
   $errors = check_required_fields($required_fields, $form);
@@ -31,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: index.php");
     exit();
   } else {
-    $content = include_template("login.php", ["categories" => $categories, "errors" => $errors, "form" => $form]);
+    $content = include_template("login.php", ["categories" => $categories,
+      "errors" => $errors, "form" => $form]);
     $title = "Ошибка";
     $layout = get_layout($content, $title, $categories, $user_name);
     print($layout);
@@ -47,4 +48,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     print($layout);
   }
 }
-?>

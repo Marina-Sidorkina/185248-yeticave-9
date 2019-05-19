@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: login.php");
     exit();
   } else {
-    $content = include_template("sign-up.php", ["categories" => $categories, "errors" => $errors, "form" => $form]);
+    $content = include_template("sign-up.php", ["categories" => $categories,
+      "errors" => $errors, "form" => $form]);
     $title = "Ошибка";
     $layout = get_layout($content, $title, $categories, $user_name);
     print($layout);
@@ -40,4 +41,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $layout = get_layout($content, $title, $categories, $user_name);
   print($layout);
 }
-?>

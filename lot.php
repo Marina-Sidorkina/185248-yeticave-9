@@ -32,7 +32,8 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
     $errors["cost"] = "Ставка должна быть больше, чем текущая цена лота + шаг ставки";
   }
 
-  if (!(is_numeric($form["cost"])) or (((int) $form["cost"]) <= 0) or !(filter_var($form["cost"], FILTER_VALIDATE_INT))) {
+  if (!(is_numeric($form["cost"])) or (((int) $form["cost"]) <= 0)
+     or !(filter_var($form["cost"], FILTER_VALIDATE_INT))) {
     $errors["cost"] = "Содержимое поля должно быть целым числом больше нуля";
   }
 
@@ -42,7 +43,9 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: " . $_SERVER["REQUEST_URI"]);
     exit();
   } else {
-    $content = include_template("lot.php", ["lot" => $lot, "categories" => $categories, "errors" => $errors, "form" => $form, "all_bets" => $all_bets]);
+    $content = include_template("lot.php", ["lot" => $lot,
+      "categories" => $categories, "errors" => $errors,
+      "form" => $form, "all_bets" => $all_bets]);
     $title = $lot["title"];
     $layout = get_layout($content, $title, $categories, $user_name);
     print($layout);
@@ -51,7 +54,8 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($lot) {
-  $content = include_template("lot.php", ["lot" => $lot, "categories" => $categories, "all_bets" => $all_bets]);
+  $content = include_template("lot.php", ["lot" => $lot,
+    "categories" => $categories, "all_bets" => $all_bets]);
   $title = $lot["title"];
   $error = false;
 } else {
@@ -67,4 +71,3 @@ if ($error) {
 }
 
 print($layout);
-?>

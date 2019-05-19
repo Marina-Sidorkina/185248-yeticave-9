@@ -10,9 +10,9 @@ check_categories($categories, $user_name);
 
 $user_bets = get_user_bets($_SESSION["user"]["id"]) ?? [];
 
-$content = include_template("my-bets.php", ["categories" => $categories, "user_bets" => $user_bets]);
+$content = include_template("my-bets.php", ["categories" => $categories,
+  "user_bets" => $user_bets]);
 $title = "Мои ставки";
 $layout = get_layout($content, $title, $categories, $user_name);
 
 print($layout);
-?>

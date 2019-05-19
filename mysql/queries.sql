@@ -22,9 +22,9 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
     5000,
     1,
     1,
-    2,
+    NULL,
     '2019-01-05 07:30',
-    '2019-05-05 07:30'
+    '2019-06-06 07:30'
   ),
   (
     'DC Ply Mens 2016/2017 Snowboard',
@@ -34,9 +34,9 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
     5000,
     1,
     1,
-    2,
+    NULL,
     '2019-01-05 07:30',
-    '2019-05-05 07:30'
+    '2019-06-10 07:30'
   ),
   (
     'Крепления Union Contact Pro 2015 года размер L/XL',

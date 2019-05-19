@@ -16,7 +16,9 @@
         <div class="rates__img">
           <img src="<?=$value["url"]; ?>" width="54" height="40" alt="Сноуборд">
         </div>
-        <h3 class="rates__title"><a href="lot.php?lot_id=<?=$value["lot_id"]; ?>"><?=$value["lot_title"]; ?></a></h3>
+        <h3 class="rates__title">
+          <a href="lot.php?lot_id=<?=$value["lot_id"]; ?>"><?=$value["lot_title"]; ?></a>
+        </h3>
       </td>
       <td class="rates__category">
         <?=$value["category"]; ?>
@@ -24,7 +26,9 @@
       <td class="rates__timer">
       <?php if (strtotime($value["expired_at"]) > time()) : ?>
         <div class="timer <?=get_time_params($value["expired_at"])["expiration_mark"]; ?>">
-          <?=get_time_params($value["expired_at"])["hours_left"]; ?>:<?=get_time_params($value["expired_at"])["minutes_left"]; ?>:<?=get_time_params($value["expired_at"])["seconds_left"]; ?>
+          <?=get_time_params($value["expired_at"])["hours_left"]; ?>:
+          <?=get_time_params($value["expired_at"])["minutes_left"]; ?>:
+          <?=get_time_params($value["expired_at"])["seconds_left"]; ?>
         </div>
       <?php elseif ($value["winner_id"] === $_SESSION["user"]["id"]) : ?>
         <div class="timer timer--win">

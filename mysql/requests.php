@@ -11,7 +11,10 @@ function get_categories_link($link) {
 }
 
 function get_active_lots_link($link) {
-  $sql = 'SELECT c.title "category", l.id "id", l.title "title", l.description "description", l.price "price", l.bet_step "step", l.picture_url "url", l.expired_at "expirationDate" FROM lots l
+  $sql = 'SELECT c.title "category", l.id "id",
+    l.title "title", l.description "description",
+    l.price "price", l.bet_step "step", l.picture_url "url",
+    l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE NOW() < l.expired_at AND l.winner_id IS NULL
     ORDER BY l.created_at DESC';
@@ -19,7 +22,10 @@ function get_active_lots_link($link) {
 }
 
 function get_lot_by_id_link($link, $id) {
-  $sql = 'SELECT c.title "category", l.id "id", l.title "title", l.description "description", l.price "price", l.bet_step "step", l.picture_url "url", l.user_id "user_id", l.expired_at "expirationDate" FROM lots l
+  $sql = 'SELECT c.title "category", l.id "id",
+    l.title "title", l.description "description",
+    l.price "price", l.bet_step "step", l.picture_url "url",
+    l.user_id "user_id", l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE l.id = "'. $id .'"';
   return mysqli_query($link, $sql);
@@ -163,7 +169,8 @@ function add_new_bet($lot_id, $user_id, $bet) {
 
 function get_bets_by_lot($lot_id) {
   $link = create_link();
-  $sql = 'SELECT u.name "user", b.lot_id, b.user_id, b.price, b.created_at FROM bets b
+  $sql = 'SELECT u.name "user", b.lot_id,
+    b.user_id, b.price, b.created_at FROM bets b
     JOIN users u ON b.user_id = u.id
     WHERE b.lot_id = "'. $lot_id .'"';
   $result = mysqli_query($link, $sql);
@@ -173,11 +180,30 @@ function get_bets_by_lot($lot_id) {
 
 function get_user_bets($user_id) {
   $link = create_link();
-  $sql = 'SELECT l.title "lot_title", l.id "lot_id", l.picture_url "url", l.winner_id "winner_id", l.expired_at "expired_at", c.title "category", b.price "price", b.created_at "bet_date" FROM bets b
+  $sql = 'SELECT l.title "lot_title", l.id "lot_id",
+    l.picture_url "url", l.winner_id "winner_id",
+    l.expired_at "expired_at", c.title "category",
+    b.price "price", b.created_at "bet_date" FROM bets b
     JOIN lots l ON b.lot_id = l.id
     JOIN categories c ON l.category_id = c.id
     WHERE b.user_id = "'. $user_id .'"
     ORDER BY b.created_at DESC';
   $result = mysqli_query($link, $sql);
   return get_array($result);
+}
+
+function get_search_result($search) {
+  $link = create_link();
+  $sql = 'SELECT c.title "category", l.id "id",
+    l.title "title", l.description "description",
+    l.price "price", l.bet_step "step", l.picture_url "url",
+    l.expired_at "expirationDate" FROM lots l
+    JOIN categories c ON l.category_id = c.id
+    WHERE MATCH(l.title, l.description) AGAINST(?)
+    AND NOW() < l.expired_at AND l.winner_id IS NULL
+    ORDER BY l.created_at DESC';
+  $stmt = db_get_prepare_stmt($link, $sql, [$search]);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
