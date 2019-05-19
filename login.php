@@ -31,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: index.php");
     exit();
   } else {
-    $content = include_template("login.php", ["categories" => $categories, "errors" => $errors, "form" => $form]);
+    $content = include_template("login.php", ["categories" => $categories,
+      "errors" => $errors, "form" => $form]);
     $title = "Ошибка";
     $layout = get_layout($content, $title, $categories, $user_name);
     print($layout);
