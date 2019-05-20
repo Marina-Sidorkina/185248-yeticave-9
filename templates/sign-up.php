@@ -1,12 +1,3 @@
-<nav class="nav">
-  <ul class="nav__list container">
-  <?php foreach ($categories as $value): ?>
-    <li class="nav__item">
-      <a href="all-lots.html"><?=htmlspecialchars($value["title"]); ?></a>
-    </li>
-  <?php endforeach; ?>
-  </ul>
-</nav>
 <form class="form container" action="" method="post"
   autocomplete="off" enctype="multipart/form-data">
   <h2>Регистрация нового аккаунта</h2>

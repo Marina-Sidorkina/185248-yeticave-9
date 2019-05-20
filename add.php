@@ -7,12 +7,13 @@ $link = create_link();
 $categories = get_categories($link);
 $user_name = set_user($_SESSION);
 check_categories($categories, $user_name);
+$categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
 if (!isset($_SESSION['user'])) {
     header('HTTP/1.0 403 Forbidden');
     $content = "Доступ заблокирован, необходимо зарегистрироваться!";
     $title = "Ошибка";
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
     print($layout);
     exit();
 }
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $content = include_template("add.php",
       ["categories" => $categories, "errors" => $errors, "lot" => $lot]);
     $title = "Ошибка";
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
     print($layout);
   } else {
     $id = add_new_lot($lot);
@@ -51,6 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 else {
   $content = include_template("add.php", ["categories" => $categories]);
   $title = "Добавить лот";
-  $layout = get_layout($content, $title, $categories, $user_name);
+  $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
   print($layout);
 }

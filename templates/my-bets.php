@@ -1,12 +1,3 @@
-<nav class="nav">
-  <ul class="nav__list container">
-  <?php foreach ($categories as $value): ?>
-    <li class="nav__item">
-      <a href="all-lots.html"><?=htmlspecialchars($value["title"]); ?></a>
-    </li>
-  <?php endforeach; ?>
-  </ul>
-</nav>
 <section class="rates container">
   <h2>Мои ставки</h2>
   <table class="rates__list">

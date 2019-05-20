@@ -90,6 +90,13 @@ function get_category_id_by_name($link, $name) {
   return mysqli_fetch_array($result, MYSQLI_ASSOC)["id"];
 }
 
+function get_category_name_by_id($link, $id) {
+  $id = mysqli_real_escape_string($link, $id);
+  $sql = 'SELECT * FROM categories c WHERE c.id = "'. $id .'"';
+  $result = mysqli_query($link, $sql);
+  return mysqli_fetch_array($result, MYSQLI_ASSOC)["title"];
+}
+
 function add_new_lot($lot) {
   $link = create_link();
   $category = get_category_id_by_name($link, $lot['category']);
@@ -209,6 +216,22 @@ function get_search_result($search) {
     AND NOW() < l.expired_at AND l.winner_id IS NULL
     ORDER BY l.created_at DESC';
   $stmt = db_get_prepare_stmt($link, $sql, [$search]);
+  mysqli_stmt_execute($stmt);
+  $result = mysqli_stmt_get_result($stmt);
+  return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function get_all_lots_by_category($category_id) {
+  $link = create_link();
+  $sql = 'SELECT c.title "category", l.id "id",
+    l.title "title", l.description "description",
+    l.price "price", l.bet_step "step", l.picture_url "url",
+    l.expired_at "expirationDate" FROM lots l
+    JOIN categories c ON l.category_id = c.id
+    WHERE l.category_id = ?
+    AND NOW() < l.expired_at AND l.winner_id IS NULL
+    ORDER BY l.created_at DESC';
+  $stmt = db_get_prepare_stmt($link, $sql, [$category_id]);
   mysqli_stmt_execute($stmt);
   $result = mysqli_stmt_get_result($stmt);
   return mysqli_fetch_all($result, MYSQLI_ASSOC);

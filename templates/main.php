@@ -8,7 +8,7 @@
   <?php foreach ($categories as $value): ?>
     <li class="promo__item promo__item--<?=htmlspecialchars($value["char_code"]); ?>">
       <a class="promo__link"
-        href="pages/all-lots.html"><?=htmlspecialchars($value["title"]); ?>
+        href="all-lots.php?category=<?=htmlspecialchars($value["id"]); ?>"><?=htmlspecialchars($value["title"]); ?>
       </a>
     </li>
   <?php endforeach; ?>

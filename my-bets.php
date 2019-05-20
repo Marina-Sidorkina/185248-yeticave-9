@@ -7,12 +7,13 @@ $link = create_link();
 $categories = get_categories($link);
 $user_name = set_user();
 check_categories($categories, $user_name);
+$categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
 $user_bets = get_user_bets($_SESSION["user"]["id"]) ?? [];
 
 $content = include_template("my-bets.php", ["categories" => $categories,
   "user_bets" => $user_bets]);
 $title = "Мои ставки";
-$layout = get_layout($content, $title, $categories, $user_name);
+$layout = get_layout($content, $title, $categories, $user_name, $categories_block);
 
 print($layout);

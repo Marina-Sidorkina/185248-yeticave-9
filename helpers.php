@@ -77,12 +77,13 @@ function include_template($name, array $data = []) {
   return $result;
 }
 
-function get_layout($content, $title, $categories, $user_name) {
+function get_layout($content, $title, $categories, $user_name, $categories_block) {
   return $layout = include_template("layout.php", [
     "content" => $content,
     "title" => $title,
     "user_name" => $user_name,
-    "categories" => $categories
+    "categories" => $categories,
+    "categories_block" => $categories_block ?? NULL
   ]);
 };
 

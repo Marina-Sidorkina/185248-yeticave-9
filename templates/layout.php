@@ -44,6 +44,7 @@
     </header>
 
     <main class="<?=$main_block_class ?? ""; ?>">
+      <?=isset($categories_block) ? $categories_block : ""; ?>
       <?=$content; ?>
     </main>
   </div>
@@ -53,7 +54,7 @@
       <ul class="nav__list container">
       <?php foreach ($categories as $value): ?>
         <li class="nav__item">
-          <a href="pages/all-lots.html"><?=htmlspecialchars($value["title"]); ?></a>
+          <a href="all-lots.php?category=<?=htmlspecialchars($value["id"]); ?>"><?=htmlspecialchars($value["title"]); ?></a>
         </li>
       <?php endforeach; ?>
       </ul>
