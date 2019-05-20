@@ -9,7 +9,7 @@ $categories = get_categories($link);
 $user_name = set_user();
 check_categories($categories, $user_name);
 
-$search = $_GET["search"] ?? "";
+$search = trim($_GET["search"] ?? "");
 
 if ($search) {
   $lots = get_search_result($search) ?? [];

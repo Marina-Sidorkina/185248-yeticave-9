@@ -22,9 +22,9 @@
     <div class="lot-item__right">
       <div class="lot-item__state">
         <div class="lot-item__timer timer
-          <?=get_time_params($lot["expirationDate"])["expiration_mark"]; ?>">
-          <?=get_time_params($lot["expirationDate"])["hours_left"]; ?>
-          :<?=get_time_params($lot["expirationDate"])["minutes_left"]; ?>
+          <?=get_time_params(htmlspecialchars($lot["expirationDate"]))["expiration_mark"]; ?>">
+          <?=get_time_params(htmlspecialchars($lot["expirationDate"]))["hours_left"]; ?>
+          :<?=get_time_params(htmlspecialchars($lot["expirationDate"]))["minutes_left"]; ?>
         </div>
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">
@@ -43,20 +43,20 @@
             <label for="cost">Ваша ставка</label>
             <input id="cost" type="text" name="cost"
               placeholder="<?=htmlspecialchars($lot["step"] + $lot["price"]); ?>">
-            <span class="form__error"><?=isset($errors["cost"]) ? $errors["cost"] : ""?></span>
+            <span class="form__error"><?=isset($errors["cost"]) ? htmlspecialchars($errors["cost"]) : "" ?></span>
           </p>
           <button type="submit" class="button">Сделать ставку</button>
         </form>
         <?php endif; ?>
       </div>
       <div class="history">
-        <h3>История ставок (<span><?=count($all_bets); ?></span>)</h3>
+        <h3>История ставок (<span><?=htmlspecialchars(count($all_bets)); ?></span>)</h3>
         <table class="history__list">
           <?php foreach ($all_bets as $key => $value) : ?>
             <tr class="history__item">
-              <td class="history__name"><?=$value["user"]; ?></td>
-              <td class="history__price"><?=$value["price"]; ?></td>
-              <td class="history__time"><?=get_formatted_time($value["created_at"]); ?></td>
+              <td class="history__name"><?=htmlspecialchars($value["user"]); ?></td>
+              <td class="history__price"><?=htmlspecialchars($value["price"]); ?></td>
+              <td class="history__time"><?=get_formatted_time(htmlspecialchars($value["created_at"])); ?></td>
             </tr>
           <?php endforeach; ?>
         </table>

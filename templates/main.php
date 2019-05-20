@@ -40,9 +40,9 @@
             </span>
           </div>
           <div class="lot__timer timer
-            <?=get_time_params($value["expirationDate"])["expiration_mark"]; ?>">
-            <?=get_time_params($value["expirationDate"])["hours_left"]; ?> ч
-            <?=get_time_params($value["expirationDate"])["minutes_left"]; ?> мин
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["expiration_mark"]; ?>">
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["hours_left"]; ?> ч
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["minutes_left"]; ?> мин
           </div>
         </div>
       </div>

@@ -72,6 +72,7 @@ function get_active_lots() {
 
 function get_lot_by_id($id) {
   $link = create_link();
+  $id = mysqli_real_escape_string($link, $id);
   if ($link) {
     $lotLink = get_lot_by_id_link($link, $id);
     $categories = get_categories($link);
@@ -83,6 +84,7 @@ function get_lot_by_id($id) {
 }
 
 function get_category_id_by_name($link, $name) {
+  $name = mysqli_real_escape_string($link, $name);
   $sql = 'SELECT * FROM categories c WHERE c.title = "'. $name .'"';
   $result = mysqli_query($link, $sql);
   return mysqli_fetch_array($result, MYSQLI_ASSOC)["id"];
@@ -123,7 +125,7 @@ function add_new_lot($lot) {
 
 function check_user($form) {
   $link = create_link();
-  $email = mysqli_real_escape_string($link, $form['email']);
+  $email = mysqli_real_escape_string($link, mysqli_real_escape_string($link, $form["email"]));
   $sql = 'SELECT * FROM users u
             WHERE u.email = "'. $email .'"';
   $result = mysqli_query($link, $sql);
@@ -162,6 +164,8 @@ function add_new_bet($lot_id, $user_id, $bet) {
   ]);
   mysqli_stmt_execute($stmt);
   if (mysqli_insert_id($link)) {
+    $lot_id = mysqli_real_escape_string($link, $lot_id);
+    $bet = mysqli_real_escape_string($link, $bet);
     $sql = 'UPDATE lots SET price = "'. $bet .'" WHERE id = "'. $lot_id .'"';
     mysqli_query($link, $sql);
   }
@@ -169,6 +173,7 @@ function add_new_bet($lot_id, $user_id, $bet) {
 
 function get_bets_by_lot($lot_id) {
   $link = create_link();
+  $lot_id = mysqli_real_escape_string($link, $lot_id);
   $sql = 'SELECT u.name "user", b.lot_id,
     b.user_id, b.price, b.created_at FROM bets b
     JOIN users u ON b.user_id = u.id
@@ -180,6 +185,7 @@ function get_bets_by_lot($lot_id) {
 
 function get_user_bets($user_id) {
   $link = create_link();
+  $user_id = mysqli_real_escape_string($link, $user_id);
   $sql = 'SELECT l.title "lot_title", l.id "lot_id",
     l.picture_url "url", l.winner_id "winner_id",
     l.expired_at "expired_at", c.title "category",
