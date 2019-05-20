@@ -17,7 +17,7 @@ $lots = get_all_lots_by_category($category_id) ?? [];
 
 if ($lots) {
   $cur_page = $_GET["page"] ?? 1;
-  $page_items = 2;
+  $page_items = 9;
   $items_count = count($lots);
   $pages_count = ceil($items_count / $page_items);
   $offset = ($cur_page - 1) * $page_items;

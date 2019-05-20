@@ -16,7 +16,7 @@ if ($search) {
   $lots = get_search_result($search) ?? [];
   if ($lots) {
     $cur_page = $_GET["page"] ?? 1;
-    $page_items = 2;
+    $page_items = 9;
     $items_count = count($lots);
     $pages_count = ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;

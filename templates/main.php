@@ -34,7 +34,9 @@
         </h3>
         <div class="lot__state">
           <div class="lot__rate">
-            <span class="lot__amount">Стартовая цена</span>
+            <span class="lot__amount">
+              <?=get_lot_amount_block_text($value["id"]); ?>
+            </span>
             <span class="lot__cost">
               <?=htmlspecialchars(format_price($value["price"])); ?><b class='rub'>р</b>
             </span>
