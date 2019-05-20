@@ -8,14 +8,15 @@ $link = create_link();
 $categories = get_categories($link);
 $user_name = set_user();
 check_categories($categories, $user_name);
+$categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
-$search = $_GET["search"] ?? "";
+$search = trim($_GET["search"] ?? "");
 
 if ($search) {
   $lots = get_search_result($search) ?? [];
   if ($lots) {
     $cur_page = $_GET["page"] ?? 1;
-    $page_items = 2;
+    $page_items = 9;
     $items_count = count($lots);
     $pages_count = ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
@@ -25,16 +26,16 @@ if ($search) {
       "search" => $search, "pages_count" => $pages_count,
       "pages" => $pages, "cur_page" => $cur_page]);
     $title = "Поиск";
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
   } else {
     $content = "По вашему запросу ничего не найдено...";
     $title = "Поиск";
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
   }
 } else {
   $content = "Выберите ключевые слова для поиска...";
   $title = "Поиск";
-  $layout = get_layout($content, $title, $categories, $user_name);
+  $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
 }
 
 print($layout);

@@ -7,6 +7,7 @@ $user_name = set_user();
 $link = create_link();
 $categories = get_categories($link);
 check_categories($categories, $user_name);
+$categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $errors = [];
@@ -31,13 +32,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $content = include_template("sign-up.php", ["categories" => $categories,
       "errors" => $errors, "form" => $form]);
     $title = "Ошибка";
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
     print($layout);
   }
 
 } else {
   $content = include_template("sign-up.php", ["categories" => $categories]);
   $title = "Регистрация";
-  $layout = get_layout($content, $title, $categories, $user_name);
+  $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
   print($layout);
 }

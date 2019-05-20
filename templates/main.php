@@ -8,7 +8,7 @@
   <?php foreach ($categories as $value): ?>
     <li class="promo__item promo__item--<?=htmlspecialchars($value["char_code"]); ?>">
       <a class="promo__link"
-        href="pages/all-lots.html"><?=htmlspecialchars($value["title"]); ?>
+        href="all-lots.php?category=<?=htmlspecialchars($value["id"]); ?>"><?=htmlspecialchars($value["title"]); ?>
       </a>
     </li>
   <?php endforeach; ?>
@@ -34,15 +34,17 @@
         </h3>
         <div class="lot__state">
           <div class="lot__rate">
-            <span class="lot__amount">Стартовая цена</span>
+            <span class="lot__amount">
+              <?=get_lot_amount_block_text($value["id"]); ?>
+            </span>
             <span class="lot__cost">
               <?=htmlspecialchars(format_price($value["price"])); ?><b class='rub'>р</b>
             </span>
           </div>
           <div class="lot__timer timer
-            <?=get_time_params($value["expirationDate"])["expiration_mark"]; ?>">
-            <?=get_time_params($value["expirationDate"])["hours_left"]; ?> ч
-            <?=get_time_params($value["expirationDate"])["minutes_left"]; ?> мин
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["expiration_mark"]; ?>">
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["hours_left"]; ?> ч
+            <?=get_time_params(htmlspecialchars($value["expirationDate"]))["minutes_left"]; ?> мин
           </div>
         </div>
       </div>

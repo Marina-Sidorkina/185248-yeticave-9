@@ -15,6 +15,7 @@ $link = create_link();
 $categories = get_categories($link);
 $user_name = set_user();
 check_categories($categories, $user_name);
+$categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
 if (isset($_GET["lot_id"])) {
   $id = (int) $_GET["lot_id"];
@@ -47,7 +48,7 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
       "categories" => $categories, "errors" => $errors,
       "form" => $form, "all_bets" => $all_bets]);
     $title = $lot["title"];
-    $layout = get_layout($content, $title, $categories, $user_name);
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
     print($layout);
     exit();
   }
@@ -64,7 +65,7 @@ if ($lot) {
   $error = true;
 };
 
-$layout = get_layout($content, $title, $categories, $user_name);
+$layout = get_layout($content, $title, $categories, $user_name, $categories_block);
 
 if ($error) {
   header("HTTP/ 1.1 404 Not found");

@@ -1,6 +1,6 @@
 <div class="container">
   <section class="lots">
-    <h2>Результаты поиска по запросу «<span><?=htmlspecialchars($search); ?></span>»</h2>
+    <h2>Все лоты в категории «<span><?=htmlspecialchars($category_name); ?></span>»</h2>
     <ul class="lots__list">
     <?php foreach ($lots as $value): ?>
       <li class="lots__item lot">
@@ -39,7 +39,7 @@
   <ul class="pagination-list">
     <li class="pagination-item pagination-item-prev">
       <?php if ($cur_page > 1) : ?>
-      <a href="search.php?search=<?=$search; ?>&page=<?=$cur_page - 1; ?>">Назад</a>
+      <a href="all-lots.php?category=<?=$category_id; ?>&page=<?=$cur_page - 1; ?>">Назад</a>
       <?php endif; ?>
     </li>
     <?php foreach ($pages as $page) : ?>
@@ -47,12 +47,12 @@
       <?php if (intval($page) === intval($cur_page)) : ?>
       pagination-item-active
       <?php endif; ?>">
-      <a href="search.php?search=<?=$search; ?>&page=<?=$page; ?>"><?=$page; ?></a>
+      <a href="all-lots.php?category=<?=$category_id; ?>&page=<?=$page; ?>"><?=$page; ?></a>
     </li>
     <?php endforeach; ?>
     <li class="pagination-item pagination-item-next">
       <?php if ($cur_page < $pages_count) : ?>
-      <a href="search.php?search=<?=$search; ?>&page=<?=$cur_page + 1; ?>">Вперед</a>
+      <a href="all-lots.php?category=<?=$category_id; ?>&page=<?=$cur_page + 1; ?>">Вперед</a>
       <?php endif; ?>
     </li>
   </ul>
