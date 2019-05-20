@@ -40,9 +40,7 @@
   <div class="form__item form__item--wide
     <?=isset($errors["message"]) ? "form__item--invalid" : ""?>">
     <label for="message">Описание <sup>*</sup></label>
-    <textarea id="message" name="message"
-      placeholder="Напишите описание лота"><?=isset($lot["message"]) ? htmlspecialchars($lot["message"]) : "" ?>
-    </textarea>
+    <textarea id="message" name="message" placeholder="Напишите описание лота"><?=isset($lot["message"]) ? htmlspecialchars($lot["message"]) : ""?></textarea>
     <span class="form__error">
       <?=isset($errors["message"]) ? htmlspecialchars($errors["message"]) : "" ?>
     </span>

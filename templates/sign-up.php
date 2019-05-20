@@ -39,10 +39,7 @@
   </div>
   <div class="form__item <?=isset($errors["message"]) ? "form__item--invalid" : ""?>">
     <label for="message">Контактные данные <sup>*</sup></label>
-    <textarea id="message" name="message"
-      placeholder="Напишите как с вами связаться">
-      <?=isset($form["message"]) ? htmlspecialchars($form["message"]) : "" ?>
-    </textarea>
+    <textarea id="message" name="message" placeholder="Напишите как с вами связаться"><?=isset($form["message"]) ? htmlspecialchars($form["message"]) : "" ?></textarea>
     <span class="form__error">
       <?=isset($errors["message"]) ? htmlspecialchars($errors["message"]) : "" ?>
     </span>
