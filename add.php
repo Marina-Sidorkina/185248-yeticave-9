@@ -9,8 +9,8 @@ $user_name = set_user($_SESSION);
 check_categories($categories, $user_name);
 $categories_block = include_template("categories-block.php", ["categories" => $categories]);
 
-if (!isset($_SESSION['user'])) {
-    header('HTTP/1.0 403 Forbidden');
+if (!isset($_SESSION["user"])) {
+    header("HTTP/1.0 403 Forbidden");
     $content = "Доступ заблокирован, необходимо зарегистрироваться!";
     $title = "Ошибка";
     $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $lot["lot-img"] = "uploads/" . $path;
     }
   } else {
-    $errors["lot-img"] = 'Вы не загрузили файл';
+    $errors["lot-img"] = "Вы не загрузили файл";
   };
 
   if (!empty($errors)) {

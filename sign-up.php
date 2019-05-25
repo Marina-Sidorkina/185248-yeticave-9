@@ -24,6 +24,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $errors["email"] = "Аккаунт с указанным адресом уже зарегистрирован";
   }
 
+  if (!empty($_FILES["user-img"]["name"])) {
+    $tmp_name = $_FILES["user-img"]["tmp_name"];
+    $path = $_FILES["user-img"]["name"];
+    $file_type = mime_content_type($tmp_name);
+    if ($file_type !== "image/png"
+       and $file_type !== "image/jpeg"
+       and $file_type !== "image/jpg") {
+      $errors["user-img"] = "Изображение должно быть в формате png, jpeg, или jpg";
+    } else {
+      move_uploaded_file($tmp_name, 'uploads/' . $path);
+      $form["user-img"] = "uploads/" . $path;
+    }
+  } else {
+    $errors["user-img"] = "Вы не загрузили файл";
+  };
+
   if (empty($errors) and !$user) {
     add_new_user($form);
     header("Location: login.php");

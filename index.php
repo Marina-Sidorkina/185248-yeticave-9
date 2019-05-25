@@ -19,3 +19,4 @@ $layout = include_template("layout.php", [
 ]);
 
 print($layout);
+require_once "getwinner.php";

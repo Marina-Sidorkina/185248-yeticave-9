@@ -16,7 +16,7 @@ function get_active_lots_link($link) {
     l.price "price", l.bet_step "step", l.picture_url "url",
     l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
-    WHERE NOW() < l.expired_at AND l.winner_id IS NULL
+    WHERE NOW() < l.expired_at
     ORDER BY l.created_at DESC';
   return mysqli_query($link, $sql);
 }
@@ -144,15 +144,16 @@ function add_new_user($form) {
   $link = create_link();
   $password = password_hash($form["password"], PASSWORD_DEFAULT);
   $sql = "INSERT INTO users (
-    registered_at, name, email, password, contacts
+    registered_at, name, email, password, contacts, avatar_url
   ) VALUES (
-    NOW(), ?, ?, ?, ?
+    NOW(), ?, ?, ?, ?, ?
   )";
   $stmt = db_get_prepare_stmt($link, $sql, [
     $form["name"],
     $form["email"],
     $password,
-    $form["message"]
+    $form["message"],
+    $form["user-img"]
   ]);
   mysqli_stmt_execute($stmt);
 }
@@ -193,11 +194,12 @@ function get_bets_by_lot($lot_id) {
 function get_user_bets($user_id) {
   $link = create_link();
   $user_id = mysqli_real_escape_string($link, $user_id);
-  $sql = 'SELECT l.title "lot_title", l.id "lot_id",
+  $sql = 'SELECT u.contacts "contacts", l.title "lot_title", l.id "lot_id",
     l.picture_url "url", l.winner_id "winner_id",
     l.expired_at "expired_at", c.title "category",
     b.price "price", b.created_at "bet_date" FROM bets b
     JOIN lots l ON b.lot_id = l.id
+    JOIN users u ON l.user_id = u.id
     JOIN categories c ON l.category_id = c.id
     WHERE b.user_id = "'. $user_id .'"
     ORDER BY b.created_at DESC';
@@ -213,7 +215,7 @@ function get_search_result($search) {
     l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE MATCH(l.title, l.description) AGAINST(?)
-    AND NOW() < l.expired_at AND l.winner_id IS NULL
+    AND NOW() < l.expired_at
     ORDER BY l.created_at DESC';
   $stmt = db_get_prepare_stmt($link, $sql, [$search]);
   mysqli_stmt_execute($stmt);
@@ -229,10 +231,28 @@ function get_all_lots_by_category($category_id) {
     l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
     WHERE l.category_id = ?
-    AND NOW() < l.expired_at AND l.winner_id IS NULL
+    AND NOW() < l.expired_at
     ORDER BY l.created_at DESC';
   $stmt = db_get_prepare_stmt($link, $sql, [$category_id]);
   mysqli_stmt_execute($stmt);
   $result = mysqli_stmt_get_result($stmt);
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function set_winner($winner_id, $lot_id) {
+  $link = create_link();
+  $sql = 'UPDATE lots SET winner_id = "'. $winner_id .'" WHERE id = "'. $lot_id .'"';
+  mysqli_query($link, $sql);
+}
+
+function get_winner_data() {
+  $link = create_link();
+  $sql = 'SELECT b.user_id "winner_id",
+    u.name "winner_name", u.email "winner_email",
+    l.id "lot_id", l.title "lot_title" FROM lots l
+    JOIN bets b ON l.id = b.lot_id AND l.price = b.price
+    JOIN users u ON b.user_id = u.id
+    WHERE NOW() <= l.expired_at AND l.winner_id IS NULL';
+  $result = mysqli_query($link, $sql);
+  return get_array($result);
 }

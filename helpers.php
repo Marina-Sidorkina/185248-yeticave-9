@@ -217,3 +217,8 @@ function get_lot_amount_block_text($lot_id) {
   }
   return $text;
 }
+
+function check_bet_date_and_winner($date, $winner_id) {
+  return strtotime(htmlspecialchars($date)) > time()
+     and htmlspecialchars($winner_id) === $_SESSION["user"]["id"];
+}

@@ -35,6 +35,20 @@
       <?=isset($errors["message"]) ? htmlspecialchars($errors["message"]) : "" ?>
     </span>
   </div>
+  <div class="form__item form__item--file">
+    <label>Аватар <sup>*</sup></label>
+    <div class="form__input-file">
+      <input class="visually-hidden" type="file" id="user-img"
+        value="<?=isset($form["user-img"]) ? htmlspecialchars($form["user-img"]) : "" ?>"
+        name="user-img">
+      <label for="user-img" <?=isset($errors["user-img"]) ? "style='border: 1px dashed red'" : ""?>>
+        Добавить
+      </label>
+    </div>
+    <span class="form__error" style="display: block">
+      <?=isset($errors["user-img"]) ? htmlspecialchars($errors["user-img"]) : "" ?>
+    </span>
+  </div>
   <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
   <button type="submit" class="button">Зарегистрироваться</button>
   <a class="text-link" href="login.php">Уже есть аккаунт</a>
