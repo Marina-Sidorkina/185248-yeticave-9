@@ -1,4 +1,4 @@
-<h1>Поздравляем с победой</h1>
+<h1>Поздравляем с победой!</h1>
 <p>Здравствуйте, <?=isset($data["winner_name"]) ? $data["winner_name"] : "" ?>!</p>
 <p>Ваша ставка для лота
   <a href="http://yeti/lot.php?lot_id=<?=isset($data["lot_id"]) ? $data["lot_id"] : "" ?>">

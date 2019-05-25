@@ -1,13 +1,5 @@
 <?php
-require_once "helpers.php";
-require_once "mysql/requests.php";
-session_start();
-
-$link = create_link();
-$categories = get_categories($link);
-$user_name = set_user();
-check_categories($categories, $user_name);
-$categories_block = include_template("categories-block.php", ["categories" => $categories]);
+require_once "initial.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $errors = [];
@@ -15,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $form = $_POST;
   $required_fields = ["email", "password"];
   $errors = check_required_fields($required_fields, $form);
-  $user = check_user($form["email"]);
+  $user = check_user($link, $form["email"]);
 
   if ($user) {
     $password_validity = password_verify($form['password'], $user['password']);

@@ -1,19 +1,11 @@
 <?php
-require_once "helpers.php";
-require_once "mysql/requests.php";
-session_start();
+require_once "initial.php";
 
 $layout;
-$link = create_link();
-$categories = get_categories($link);
-$user_name = set_user();
-check_categories($categories, $user_name);
-$categories_block = include_template("categories-block.php", ["categories" => $categories]);
-
 $search = trim($_GET["search"] ?? "");
 
 if ($search) {
-  $lots = get_search_result($search) ?? [];
+  $lots = get_search_result($link, $search) ?? [];
   if ($lots) {
     $cur_page = $_GET["page"] ?? 1;
     $page_items = 9;

@@ -1,19 +1,11 @@
 <?php
-require_once "helpers.php";
-require_once "mysql/requests.php";
-session_start();
+require_once "initial.php";
 
 $layout;
-$link = create_link();
-$categories = get_categories($link);
-$user_name = set_user();
-check_categories($categories, $user_name);
-$categories_block = include_template("categories-block.php", ["categories" => $categories]);
-
 $category_id = $_GET["category"];
 $category_name = get_category_name_by_id($link, $category_id);
 
-$lots = get_all_lots_by_category($category_id) ?? [];
+$lots = get_all_lots_by_category($link, $category_id) ?? [];
 
 if ($lots) {
   $cur_page = $_GET["page"] ?? 1;

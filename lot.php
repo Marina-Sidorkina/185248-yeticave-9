@@ -1,7 +1,5 @@
 <?php
-require_once "helpers.php";
-require_once "mysql/requests.php";
-session_start();
+require_once "initial.php";
 
 $title;
 $lot;
@@ -11,15 +9,9 @@ $content;
 $error;
 $all_bets = [];
 
-$link = create_link();
-$categories = get_categories($link);
-$user_name = set_user();
-check_categories($categories, $user_name);
-$categories_block = include_template("categories-block.php", ["categories" => $categories]);
-
 if (isset($_GET["lot_id"])) {
   $id = (int) $_GET["lot_id"];
-  $lot = get_lot_by_id($id);
+  $lot = get_lot_by_id($link, $id);
   $all_bets = get_bets_by_lot($id);
 };
 
@@ -39,7 +31,7 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   if (empty($errors)) {
-    add_new_bet($id, $_SESSION["user"]["id"], $form["cost"]);
+    add_new_bet($link, $id, $_SESSION["user"]["id"], $form["cost"]);
     $all_bets[] = $form["cost"];
     header("Location: " . $_SERVER["REQUEST_URI"]);
     exit();
