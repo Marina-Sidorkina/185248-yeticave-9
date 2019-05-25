@@ -1,13 +1,8 @@
 <?php
-require_once "helpers.php";
-require_once "mysql/requests.php";
-session_start();
+require_once "initial.php";
 
 $main_block_class = "container";
-$link = create_link();
-$categories = get_categories($link);
-$user_name = set_user($_SESSION);
-$content = include_template(get_active_lots()["template"], get_active_lots()["params"]);
+$content = include_template(get_active_lots($link)["template"], get_active_lots($link)["params"]);
 $title = "Главная страница";
 
 $layout = include_template("layout.php", [
@@ -19,3 +14,4 @@ $layout = include_template("layout.php", [
 ]);
 
 print($layout);
+require_once "getwinner.php";

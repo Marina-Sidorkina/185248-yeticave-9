@@ -42,10 +42,13 @@
       <input class="visually-hidden" type="file" id="lot-img"
         value="<?=isset($lot["lot-img"]) ? htmlspecialchars($lot["lot-img"]) : "" ?>"
         name="lot-img">
-      <label for="lot-img" <?=isset($errors["lot-img"]) ? "style='border: 1px dashed red'" : ""?>>
+      <label for="lot-img" <?=isset($errors["lot-img"]) ? "style='border: 1px dashed red'" : "" ?>>
         Добавить
       </label>
     </div>
+    <span class="form__error" style="display: block">
+      <?=isset($errors["lot-img"]) ? htmlspecialchars($errors["lot-img"]) : "" ?>
+    </span>
   </div>
   <div class="form__container-three">
     <div class="form__item form__item--small

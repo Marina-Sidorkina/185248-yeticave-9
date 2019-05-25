@@ -9,8 +9,8 @@ INSERT INTO categories (title, char_code) VALUES
 
 /* Добавление пользователей */
 INSERT INTO users (name, email, password, avatar_url, contacts, registered_at) VALUES
-  ('Tom', 'tom@gmail.com', 'tom_password', 'tom_avatar.jpg', 'Beverly Hills, California, US', '2019-01-01 07:30'),
-  ('Jerry', 'jerry@gmail.com', 'jerry_password', 'jerry_avatar.jpg', 'Beverly Hills, California, US', '2019-05-01 07:30');
+  ('Tom', 'tom@gmail.com', '$2y$10$kRmoHaA/enJphFlPmxoI2OAu/qK0DlEdJ/NJHIiNuUXn6uzB7OdF.', 'tom_avatar.jpg', 'Beverly Hills, California, US', '2019-01-01 07:30'),
+  ('Jerry', 'jerry@gmail.com', '$2y$10$Eg8V4knOEy2wm.a/U29u/.xUa.f415/Bcla6VKWm8N991G9CLZT0e', 'jerry_avatar.jpg', 'Beverly Hills, California, US', '2019-05-01 07:30');
 
 /* Добавление лотов */
 INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, category_id, winner_id, created_at, expired_at) VALUES
