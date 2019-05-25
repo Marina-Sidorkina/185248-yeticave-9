@@ -289,7 +289,7 @@ function get_bet_block_status($lot, $all_bets) {
   return isset($_SESSION["user"])
       and (strtotime($lot["expirationDate"]) > time())
       and $lot["user_id"] !== $_SESSION["user"]["id"]
-      and $all_bets ? ($all_bets[count($all_bets) - 1]["user"]) !== ($_SESSION["user"]["name"]) : true;
+      and $all_bets ? ($all_bets[0]["user"]) !== ($_SESSION["user"]["name"]) : true;
 }
 
 /**

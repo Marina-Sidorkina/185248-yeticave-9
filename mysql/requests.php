@@ -162,7 +162,7 @@ function get_category_name_by_id($link, $id) {
 function add_new_lot($lot) {
   $link = create_link();
   $category = get_category_id_by_name($link, $lot['category']);
-  $user_id = 1;
+  $user_id = $_SESSION["user"]["id"];
 
   $sql = "INSERT INTO lots (
     created_at,
@@ -268,7 +268,8 @@ function get_bets_by_lot($lot_id) {
   $sql = 'SELECT u.name "user", b.lot_id,
     b.user_id, b.price, b.created_at FROM bets b
     JOIN users u ON b.user_id = u.id
-    WHERE b.lot_id = "'. $lot_id .'"';
+    WHERE b.lot_id = "'. $lot_id .'"
+    ORDER BY b.created_at DESC';
   $result = mysqli_query($link, $sql);
   $bets = get_array($result) ?? [];
   return $bets;

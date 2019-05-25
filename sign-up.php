@@ -36,9 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       move_uploaded_file($tmp_name, 'uploads/' . $path);
       $form["user-img"] = "uploads/" . $path;
     }
-  } else {
-    $errors["user-img"] = "Вы не загрузили файл";
-  };
+  }
 
   if (empty($errors) and !$user) {
     add_new_user($form);

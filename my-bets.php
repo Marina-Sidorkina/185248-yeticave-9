@@ -3,6 +3,7 @@ require_once "helpers.php";
 require_once "mysql/requests.php";
 session_start();
 
+$layout;
 $link = create_link();
 $categories = get_categories($link);
 $user_name = set_user();
