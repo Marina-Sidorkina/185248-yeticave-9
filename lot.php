@@ -19,7 +19,7 @@ $categories_block = include_template("categories-block.php", ["categories" => $c
 
 if (isset($_GET["lot_id"])) {
   $id = (int) $_GET["lot_id"];
-  $lot = get_lot_by_id($id)["lot"];
+  $lot = get_lot_by_id($id);
   $all_bets = get_bets_by_lot($id);
 };
 

@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $form = $_POST;
   $required_fields = ["email", "password", "name", "message"];
   $errors = check_required_fields($required_fields, $form);
-  $user = check_user($form);
+  $user = check_user($form["email"]);
 
   if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
     $errors["email"] = "Указан некорректный адрес";

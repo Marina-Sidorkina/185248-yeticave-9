@@ -1,15 +1,29 @@
 <?php
+/**
+ * Создаёт подключение к БД
+ * @return mysqli Ресурс соединения
+ */
 function create_link() {
   $link = mysqli_connect("localhost", "root", "", "yeti");
   mysqli_set_charset($link, "utf8");
   return $link;
 }
 
+/**
+ * Подготавливает запрос и возвращает ссылку на данные по категориям лотов в БД
+ * @param mysqli $link Ресурс соединения
+ * @return mysqli Результат sql-запроса - ссылка на данные по категориям лотов в БД
+ */
 function get_categories_link($link) {
   $sql = 'SELECT id, title, char_code FROM categories';
   return mysqli_query($link, $sql);
 }
 
+/**
+ * Подготавливает запрос и возвращает ссылку на список активных лотов в БД
+ * @param mysqli $link Ресурс соединения
+ * @return mysqli Результат sql-запроса - ссылка на список активных лотов в БД
+ */
 function get_active_lots_link($link) {
   $sql = 'SELECT c.title "category", l.id "id",
     l.title "title", l.description "description",
@@ -21,6 +35,12 @@ function get_active_lots_link($link) {
   return mysqli_query($link, $sql);
 }
 
+/**
+ * Подготавливает запрос и возвращает ссылку на лот по его ID в БД
+ * @param mysqli $link Ресурс соединения
+ * @param int $id ID лота
+ * @return mysqli Результат sql-запроса - ссылка на лот по его ID в БД
+ */
 function get_lot_by_id_link($link, $id) {
   $sql = 'SELECT c.title "category", l.id "id",
     l.title "title", l.description "description",
@@ -31,20 +51,39 @@ function get_lot_by_id_link($link, $id) {
   return mysqli_query($link, $sql);
 }
 
+/**
+ * Преобразует ссылку на данные из БД в ассоциативный массив
+ * @param mysqli $result Результат sql-запроса
+ * @return array Ассоциативный массив из данных из БД
+ */
 function get_array($result) {
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+/**
+ * Создаёт запрос в БД на получение списка категорий и в случае успешного ответа
+ * преобразует данные в массив, в случае неудачного соединения - возвращает пустой массив
+ * @param mysqli $link Ресурс соединения
+ * @return array Массив данных по категориям лотов
+ */
 function get_categories($link) {
+  $categoriesLink;
   if ($link) {
     $categoriesLink = get_categories_link($link);
   }
   if ($categoriesLink) {
     $result = get_array($categoriesLink) ?? [];
     return $result;
+  } else {
+    return [];
   }
 };
 
+/**
+ * Создает запросы в БД на получение активных лотов и категорий лотов.
+ * В зависимости от результатf запроса подготавливает параметры для функции include_template
+ * @return array Ассоциативный массив с параметрами для функции include_template
+ */
 function get_active_lots() {
   $link = create_link();
   if (!$link) {
@@ -70,19 +109,31 @@ function get_active_lots() {
   }
 }
 
+/**
+ * Создаёт запрос на получения лота по его ID и преобразует ответ в ассоциативный массив
+ * @param int $id ID лота
+ * @return array Массив с данными о лоте при успешном запросе
+ * или пустой массив при ошибке запроса
+ */
 function get_lot_by_id($id) {
+  $lot = [];
   $link = create_link();
   $id = mysqli_real_escape_string($link, $id);
   if ($link) {
     $lotLink = get_lot_by_id_link($link, $id);
-    $categories = get_categories($link);
-    if ($lotLink and $categories) {
+    if ($lotLink) {
       $lot = mysqli_fetch_array($lotLink, MYSQLI_ASSOC);
-      return ["categories" => $categories, "lot" => $lot];
     }
   }
+  return $lot;
 }
 
+/**
+ * Создаёт запрос на получение ID категории по её названию
+ * @param mysqli $link Ресурс соединения
+ * @param string $name Название категории
+ * @return int ID категории
+ */
 function get_category_id_by_name($link, $name) {
   $name = mysqli_real_escape_string($link, $name);
   $sql = 'SELECT * FROM categories c WHERE c.title = "'. $name .'"';
@@ -90,6 +141,12 @@ function get_category_id_by_name($link, $name) {
   return mysqli_fetch_array($result, MYSQLI_ASSOC)["id"];
 }
 
+/**
+ * Создаёт запрос на получение названия категории по её ID
+ * @param mysqli $link Ресурс соединения
+ * @param int $id ID категории
+ * @return string Название категории
+ */
 function get_category_name_by_id($link, $id) {
   $id = mysqli_real_escape_string($link, $id);
   $sql = 'SELECT * FROM categories c WHERE c.id = "'. $id .'"';
@@ -97,6 +154,11 @@ function get_category_name_by_id($link, $id) {
   return mysqli_fetch_array($result, MYSQLI_ASSOC)["title"];
 }
 
+/**
+ * Добавляет новый лот в БД на основе подготовленного выражения
+ * @param array $lot Данные о новом лоте в виде ассоциативного массива
+ * @return int Возвращает автоматически генерируемый ID для нового лота
+ */
 function add_new_lot($lot) {
   $link = create_link();
   $category = get_category_id_by_name($link, $lot['category']);
@@ -130,16 +192,26 @@ function add_new_lot($lot) {
   return mysqli_insert_id($link);
 }
 
-function check_user($form) {
+/**
+ * Создаёт запрос на получение данных о пользователе по его email.
+ * @param string $user_email Email пользователя
+ * @return array Если пользователь найден, возвращает массив данных о пользователе.
+ * Если не найден - возвращает пустой массив
+ */
+function check_user($user_email) {
   $link = create_link();
-  $email = mysqli_real_escape_string($link, mysqli_real_escape_string($link, $form["email"]));
+  $email = mysqli_real_escape_string($link, mysqli_real_escape_string($link, $user_email));
   $sql = 'SELECT * FROM users u
             WHERE u.email = "'. $email .'"';
   $result = mysqli_query($link, $sql);
-  $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : null;
+  $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : [];
   return $user;
 }
 
+/**
+ * Добавляет данные о новом пользователе в БД
+ * @param array Данные формы регистрации нового пользователя
+ */
 function add_new_user($form) {
   $link = create_link();
   $password = password_hash($form["password"], PASSWORD_DEFAULT);
@@ -158,6 +230,12 @@ function add_new_user($form) {
   mysqli_stmt_execute($stmt);
 }
 
+/**
+ * Добавляет нову ставку в БД
+ * @param int $lot_id ID лота
+ * @param int $user_id ID пользователя, добавившего ставку
+ * @param int $bet_id Ставка
+ */
 function add_new_bet($lot_id, $user_id, $bet) {
   $link = create_link();
   $sql = "INSERT INTO bets (
@@ -179,6 +257,11 @@ function add_new_bet($lot_id, $user_id, $bet) {
   }
 }
 
+/**
+ * Получает из БД данные о всех ставках для лота по его ID
+ * @param int $lot_id ID лота
+ * @return array Массив данных о всех ставках для лота
+ */
 function get_bets_by_lot($lot_id) {
   $link = create_link();
   $lot_id = mysqli_real_escape_string($link, $lot_id);
@@ -191,6 +274,11 @@ function get_bets_by_lot($lot_id) {
   return $bets;
 }
 
+/**
+ * Получает из БД данные о всех ставках пользователя по его ID
+ * @param int $user_id ID пользователя
+ * @return array Массив данных о всех ставках пользозвателя
+ */
 function get_user_bets($user_id) {
   $link = create_link();
   $user_id = mysqli_real_escape_string($link, $user_id);
@@ -207,6 +295,12 @@ function get_user_bets($user_id) {
   return get_array($result);
 }
 
+/**
+ * Получает массив всех лотов, в названии или описании которых
+ * найдены соответствия поисковому запросу
+ * @param string $search Запрос для поиска
+ * @return Массив с данными о всех лотах, соответствующих запросу
+ */
 function get_search_result($search) {
   $link = create_link();
   $sql = 'SELECT c.title "category", l.id "id",
@@ -223,6 +317,11 @@ function get_search_result($search) {
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+/**
+ * Получает массив данных о всех лотах в запрашиваемой категории (по её ID)
+ * @param int $categoru_id ID категории
+ * @return array Массив с данными о всех лотах в запрашиваемой категории
+ */
 function get_all_lots_by_category($category_id) {
   $link = create_link();
   $sql = 'SELECT c.title "category", l.id "id",
@@ -239,12 +338,22 @@ function get_all_lots_by_category($category_id) {
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+/**
+ * Записывает в БД данные о победителе торгов по лоту
+ * @param int $winner_id ID пользователя
+ * @param int $lot_id ID лота
+ */
 function set_winner($winner_id, $lot_id) {
   $link = create_link();
   $sql = 'UPDATE lots SET winner_id = "'. $winner_id .'" WHERE id = "'. $lot_id .'"';
   mysqli_query($link, $sql);
 }
 
+/**
+ * Ищет все лоты, у которых не установлен победитель.
+ * Ищет последнюю ставку по найденным лотам и её автора.
+ * @return array Массив с данными, необходимыми для объявления победителя
+ */
 function get_winner_data() {
   $link = create_link();
   $sql = 'SELECT b.user_id "winner_id",

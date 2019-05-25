@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $form = $_POST;
   $required_fields = ["email", "password"];
   $errors = check_required_fields($required_fields, $form);
-  $user = check_user($form);
+  $user = check_user($form["email"]);
 
   if ($user) {
     $password_validity = password_verify($form['password'], $user['password']);
