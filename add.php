@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!empty($errors)) {
         $content = include_template(
-        "add.php",
-        ["categories" => $categories, "errors" => $errors, "lot" => $lot]
+            "add.php",
+            ["categories" => $categories, "errors" => $errors, "lot" => $lot]
     );
         $title = "Ошибка";
         $layout = get_layout($content, $title, $categories, $user_name, $categories_block);

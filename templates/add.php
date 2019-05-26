@@ -18,8 +18,9 @@
       <select id="category" name="category">
         <option>Выберите категорию</option>
       <?php foreach ($categories as $value): ?>
-        <option <?=(isset($lot) and ($lot["category"] == $value["title"])) ? "selected" : ""?>>
-          <?=htmlspecialchars($value["title"]); ?>
+        <option <?=(isset($lot) and isset($value["title"])
+                   and ($lot["category"] === $value["title"])) ? "selected" : ""?>>
+          <?=isset($value["title"]) ? htmlspecialchars($value["title"]) : "" ?>
         </option>
       <?php endforeach; ?>
       </select>

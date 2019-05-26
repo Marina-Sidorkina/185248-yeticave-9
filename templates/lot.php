@@ -1,29 +1,42 @@
 <section class="lot-item container">
-  <h2><?=htmlspecialchars($lot["title"]); ?></h2>
+  <h2><?=isset($lot["title"]) ? htmlspecialchars($lot["title"]) : "" ?></h2>
   <div class="lot-item__content">
     <div class="lot-item__left">
       <div class="lot-item__image">
-        <img src="<?=htmlspecialchars($lot["url"]); ?>" width="730" height="548" alt="Сноуборд">
+        <img src="<?=isset($lot["url"]) ? htmlspecialchars($lot["url"]) : "" ?>" width="730" height="548" alt="Сноуборд">
       </div>
       <p class="lot-item__category">
-        Категория: <span><?=htmlspecialchars($lot["category"]); ?></span>
+        Категория:
+        <span>
+          <?=isset($lot["category"]) ? htmlspecialchars($lot["category"]) : "" ?>
+        </span>
       </p>
-      <p class="lot-item__description"><?=htmlspecialchars($lot["description"]); ?></p>
+      <p class="lot-item__description">
+        <?=isset($lot["description"]) ? htmlspecialchars($lot["description"]) : "" ?>
+      </p>
     </div>
     <div class="lot-item__right">
       <div class="lot-item__state">
         <div class="lot-item__timer timer
-          <?=get_time_params(htmlspecialchars($lot["expirationDate"]))["expiration_mark"]; ?>">
-          <?=get_time_params(htmlspecialchars($lot["expirationDate"]))["hours_left"]; ?>
-          :<?=get_time_params(htmlspecialchars($lot["expirationDate"]))["minutes_left"]; ?>
+          <?=isset($lot["expirationDate"]) ?
+            get_time_params(htmlspecialchars($lot["expirationDate"]))["expiration_mark"] : "" ?>">
+          <?=isset($lot["expirationDate"]) ?
+            get_time_params(htmlspecialchars($lot["expirationDate"]))["hours_left"] : "" ?> :
+          <?=isset($lot["expirationDate"]) ?
+            get_time_params(htmlspecialchars($lot["expirationDate"]))["minutes_left"] : "" ?>
         </div>
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">
             <span class="lot-item__amount">Текущая цена</span>
-            <span class="lot-item__cost"><?=htmlspecialchars($lot["price"]); ?></span>
+            <span class="lot-item__cost">
+              <?=isset($lot["price"]) ? htmlspecialchars(format_price($lot["price"])) : "" ?>
+            </span>
           </div>
           <div class="lot-item__min-cost">
-            Мин. ставка <span><?=htmlspecialchars($lot["step"] + $lot["price"]); ?> р</span>
+            Мин. ставка
+            <span>
+              <?=(isset($lot["step"]) and isset($lot["price"])) ? htmlspecialchars(format_price($lot["step"] + $lot["price"])) : "" ?> р
+            </span>
           </div>
         </div>
         <?php if (get_bet_block_status($lot, $all_bets)) : ?>
@@ -33,7 +46,7 @@
             <?=isset($errors["cost"]) ? "form__item--invalid" : ""?>">
             <label for="cost">Ваша ставка</label>
             <input id="cost" type="text" name="cost"
-              placeholder="<?=htmlspecialchars($lot["step"] + $lot["price"]); ?>">
+              placeholder="<?=(isset($lot["step"]) and isset($lot["price"])) ? htmlspecialchars($lot["step"] + $lot["price"]) : "" ?>">
             <span class="form__error"><?=isset($errors["cost"]) ? htmlspecialchars($errors["cost"]) : "" ?></span>
           </p>
           <button type="submit" class="button">Сделать ставку</button>
@@ -45,9 +58,15 @@
         <table class="history__list">
           <?php foreach ($all_bets as $key => $value) : ?>
             <tr class="history__item">
-              <td class="history__name"><?=htmlspecialchars($value["user"]); ?></td>
-              <td class="history__price"><?=htmlspecialchars($value["price"]); ?></td>
-              <td class="history__time"><?=get_formatted_time(htmlspecialchars($value["created_at"])); ?></td>
+              <td class="history__name">
+                <?=isset($value["user"]) ? htmlspecialchars($value["user"]) : "" ?>
+              </td>
+              <td class="history__price">
+                <?=isset($value["price"]) ? htmlspecialchars(format_price($value["price"])) : "" ?>
+              </td>
+              <td class="history__time">
+                <?=isset($value["created_at"]) ? get_formatted_time(htmlspecialchars($value["created_at"])) : "" ?>
+              </td>
             </tr>
           <?php endforeach; ?>
         </table>
