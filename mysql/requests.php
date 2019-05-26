@@ -46,6 +46,7 @@ function get_active_lots_link($link)
  */
 function get_lot_by_id_link($link, $id)
 {
+    $id = mysqli_real_escape_string($link, $id);
     $sql = 'SELECT c.title "category", l.id "id",
     l.title "title", l.description "description",
     l.price "price", l.bet_step "step", l.picture_url "url",
@@ -210,7 +211,7 @@ function add_new_lot($link, $lot)
  */
 function check_user($link, $user_email)
 {
-    $email = mysqli_real_escape_string($link, mysqli_real_escape_string($link, $user_email));
+    $email = mysqli_real_escape_string($link, $user_email);
     $sql = 'SELECT * FROM users u
             WHERE u.email = "'. $email .'"';
     $result = mysqli_query($link, $sql);
@@ -319,6 +320,7 @@ function get_user_bets($link, $user_id)
  */
 function get_search_result($link, $search)
 {
+    $search = mysqli_real_escape_string($link, $search);
     $sql = 'SELECT c.title "category", l.id "id",
     l.title "title", l.description "description",
     l.price "price", l.bet_step "step", l.picture_url "url",
@@ -341,6 +343,7 @@ function get_search_result($link, $search)
  */
 function get_all_lots_by_category($link, $category_id)
 {
+    $category_id = mysqli_real_escape_string($link, $category_id);
     $sql = 'SELECT c.title "category", l.id "id",
     l.title "title", l.description "description",
     l.price "price", l.bet_step "step", l.picture_url "url",
@@ -363,6 +366,8 @@ function get_all_lots_by_category($link, $category_id)
  */
 function set_winner($link, $winner_id, $lot_id)
 {
+    $winner_id = mysqli_real_escape_string($link, $winner_id);
+    $lot_id = mysqli_real_escape_string($link, $lot_id);
     $sql = 'UPDATE lots SET winner_id = "'. $winner_id .'" WHERE id = "'. $lot_id .'"';
     mysqli_query($link, $sql);
 }

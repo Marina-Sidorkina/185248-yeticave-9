@@ -89,8 +89,8 @@ INSERT INTO lots (title, description, picture_url, price, bet_step, user_id, cat
 
 /* Добавление ставок */
 INSERT INTO bets (lot_id, user_id, price, created_at) VALUES
-  (3, 1, 15000, '2019-04-15 05:30'),
-  (6, 2, 10000, '2019-04-10 05:30');
+  (3, 1, 8000, '2019-04-15 05:30'),
+  (4, 2, 10999, '2019-04-10 05:30');
 
 /* Получить все категории */
 SELECT * FROM categories;
