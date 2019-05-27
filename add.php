@@ -21,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $path = $_FILES["lot-img"]["name"];
         $file_type = mime_content_type($tmp_name);
         if ($file_type !== "image/png"
-       and $file_type !== "image/jpeg"
-       and $file_type !== "image/jpg") {
+            and $file_type !== "image/jpeg"
+            and $file_type !== "image/jpg") {
             $errors["lot-img"] = "Изображение должно быть в формате png, jpeg, или jpg";
         } else {
             move_uploaded_file($tmp_name, 'uploads/' . $path);
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $content = include_template("add.php",
-    ["categories" => $categories, "errors" => $errors, "lot" => $lot, "category_field" => $category_field]);
+        ["categories" => $categories, "errors" => $errors, "lot" => $lot, "category_field" => $category_field]);
     $title = "Ошибка";
     $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
     print($layout);

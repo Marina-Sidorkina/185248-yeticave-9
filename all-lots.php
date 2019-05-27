@@ -15,9 +15,15 @@ if ($lots) {
     $offset = ($cur_page - 1) * $page_items;
     $pages = range(1, $pages_count);
     $lots = array_slice($lots, $offset, $page_items);
-    $content = include_template("all-lots.php", ["categories" => $categories, "lots" => $lots,
-    "category_name" => $category_name, "category_id" => $category_id, "pages_count" => $pages_count,
-    "pages" => $pages, "cur_page" => $cur_page]);
+    $content = include_template("all-lots.php", [
+        "categories" => $categories,
+        "lots" => $lots,
+        "category_name" => $category_name,
+        "category_id" => $category_id,
+        "pages_count" => $pages_count,
+        "pages" => $pages,
+        "cur_page" => $cur_page
+    ]);
     $title = "Поиск";
     $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
 } else {
