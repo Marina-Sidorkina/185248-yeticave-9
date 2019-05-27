@@ -12,6 +12,8 @@ if (!isset($_SESSION["user"])) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $lot = $_POST;
+    $category_field = isset($lot["category"]) ? $lot["category"] : "";
+    $lot["category"] = isset($lot["category"]) ? get_category_id_by_name($link, $lot["category"]) : null;
     $errors = check_lot_data($lot);
 
     if (!empty($_FILES["lot-img"]["name"])) {
@@ -30,18 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors["lot-img"] = "Вы не загрузили файл";
     };
 
-    if (!empty($errors)) {
-        $content = include_template(
-            "add.php",
-            ["categories" => $categories, "errors" => $errors, "lot" => $lot]
-    );
-        $title = "Ошибка";
-        $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
-        print($layout);
-    } else {
+    if (empty($errors)) {
         $id = add_new_lot($link, $lot);
         header("Location: lot.php?lot_id=" . $id);
-    };
+        exit();
+    }
+
+    $content = include_template("add.php",
+    ["categories" => $categories, "errors" => $errors, "lot" => $lot, "category_field" => $category_field]);
+    $title = "Ошибка";
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
+    print($layout);
+
 } else {
     $content = include_template("add.php", ["categories" => $categories]);
     $title = "Добавить лот";

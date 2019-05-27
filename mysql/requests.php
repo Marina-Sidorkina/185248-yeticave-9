@@ -75,15 +75,14 @@ function get_array($result)
 function get_categories($link)
 {
     $categoriesLink;
+    $result = [];
     if ($link) {
         $categoriesLink = get_categories_link($link);
     }
     if ($categoriesLink) {
         $result = get_array($categoriesLink) ?? [];
-        return $result;
-    } else {
-        return [];
     }
+    return $result;
 };
 
 /**
@@ -171,7 +170,6 @@ function get_category_name_by_id($link, $id)
  */
 function add_new_lot($link, $lot)
 {
-    $category = get_category_id_by_name($link, $lot['category']);
     $user_id = $_SESSION["user"]["id"];
 
     $sql = "INSERT INTO lots (
@@ -190,7 +188,7 @@ function add_new_lot($link, $lot)
   )";
     $stmt = db_get_prepare_stmt($link, $sql, [
     $user_id,
-    $category,
+    $lot["category"],
     $lot["lot-date"],
     $lot["lot-name"],
     $lot["message"],

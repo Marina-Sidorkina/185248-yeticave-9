@@ -195,7 +195,7 @@ function get_time_params($expirationDate)
 function check_interval($date)
 {
     $interval = date_diff(date_create("today"), date_create($date));
-    return ($interval->format("%a")) >= 1;
+    return (($interval->format("%a")) >= 1) && (date_create($date) > date_create("today"));
 }
 
 /**
@@ -208,7 +208,7 @@ function check_required_fields($fields, $form)
 {
     $errors = [];
     foreach ($fields as $key) {
-        if (empty($form[$key])) {
+        if (empty($form[$key]) || !trim($form[$key])) {
             $errors[$key] = "Это поле надо заполнить";
         }
     }
@@ -227,25 +227,25 @@ function check_lot_data($lot)
     "lot-rate", "lot-step", "lot-date"];
     $errors = check_required_fields($required_fields, $lot);
 
-    if ($lot["category"] == "Выберите категорию") {
+    if (!isset($lot["category"])) {
         $errors["category"] = "Выберите категорию";
     }
 
-    if (!is_date_valid($lot["lot-date"])) {
+    if (!isset($lot["lot-date"]) || !is_date_valid($lot["lot-date"])) {
         $errors["lot-date"] = "Добавьте дату в формате ГГГГ-ММ-ДД";
     }
 
-    if (!check_interval($lot["lot-date"])) {
+    if (!isset($lot["lot-date"]) || !check_interval($lot["lot-date"])) {
         $errors["lot-date"] = "Добавьте дату больше текущей даты";
     }
 
-    if (!(is_numeric($lot["lot-rate"])) or ($lot["lot-rate"] <= 0)) {
+    if (!isset($lot["lot-rate"]) || !(is_numeric($lot["lot-rate"])) || ($lot["lot-rate"] <= 0)) {
         $errors["lot-rate"] = "Содержимое поля должно быть числом больше нуля";
     }
 
-    if (!(is_numeric($lot["lot-step"]))
-      or ($lot["lot-step"] <= 0)
-      or !(filter_var($lot["lot-step"], FILTER_VALIDATE_INT))) {
+    if (!isset($lot["lot-step"]) || !(is_numeric($lot["lot-step"]))
+      || ($lot["lot-step"] <= 0)
+      || !(filter_var($lot["lot-step"], FILTER_VALIDATE_INT))) {
         $errors["lot-step"] = "Содержимое поля должно быть целым числом больше нуля";
     }
 

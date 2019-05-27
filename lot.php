@@ -15,7 +15,7 @@ if (isset($_GET["lot_id"])) {
     $all_bets = get_bets_by_lot($id);
 };
 
-if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
+if ($lot and $_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
     $form = $_POST;
     $required_fields = ["cost"];
@@ -35,15 +35,13 @@ if ($lot and $_SERVER["REQUEST_METHOD"] == "POST") {
         $all_bets[] = $form["cost"];
         header("Location: " . $_SERVER["REQUEST_URI"]);
         exit();
-    } else {
-        $content = include_template("lot.php", ["lot" => $lot,
-      "categories" => $categories, "errors" => $errors,
-      "form" => $form, "all_bets" => $all_bets]);
-        $title = $lot["title"];
-        $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
-        print($layout);
-        exit();
     }
+
+    $content = include_template("lot.php", ["lot" => $lot, "categories" => $categories, "errors" => $errors, "form" => $form, "all_bets" => $all_bets]);
+    $title = $lot["title"];
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
+    print($layout);
+    exit();
 }
 
 if ($lot) {
