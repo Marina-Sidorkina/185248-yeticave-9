@@ -52,7 +52,7 @@ function get_lot_by_id_link($link, $id)
     l.price "price", l.bet_step "step", l.picture_url "url",
     l.user_id "user_id", l.expired_at "expirationDate" FROM lots l
     JOIN categories c ON l.category_id = c.id
-    WHERE l.id = "'. $id .'"';
+    WHERE l.id = "' . $id . '"';
     return mysqli_query($link, $sql);
 }
 
@@ -75,16 +75,17 @@ function get_array($result)
 function get_categories($link)
 {
     $categoriesLink;
+    $result = [];
     if ($link) {
         $categoriesLink = get_categories_link($link);
     }
     if ($categoriesLink) {
         $result = get_array($categoriesLink) ?? [];
-        return $result;
-    } else {
-        return [];
     }
-};
+    return $result;
+}
+
+;
 
 /**
  * Создает запросы в БД на получение активных лотов и категорий лотов.
@@ -109,9 +110,9 @@ function get_active_lots($link)
             $params = ["error" => mysqli_error($link)];
         }
         return [
-      "params" => $params,
-      "template" => $template
-    ];
+            "params" => $params,
+            "template" => $template
+        ];
     }
 }
 
@@ -144,7 +145,7 @@ function get_lot_by_id($link, $id)
 function get_category_id_by_name($link, $name)
 {
     $name = mysqli_real_escape_string($link, $name);
-    $sql = 'SELECT * FROM categories c WHERE c.title = "'. $name .'"';
+    $sql = 'SELECT * FROM categories c WHERE c.title = "' . $name . '"';
     $result = mysqli_query($link, $sql);
     return mysqli_fetch_array($result, MYSQLI_ASSOC)["id"];
 }
@@ -158,7 +159,7 @@ function get_category_id_by_name($link, $name)
 function get_category_name_by_id($link, $id)
 {
     $id = mysqli_real_escape_string($link, $id);
-    $sql = 'SELECT * FROM categories c WHERE c.id = "'. $id .'"';
+    $sql = 'SELECT * FROM categories c WHERE c.id = "' . $id . '"';
     $result = mysqli_query($link, $sql);
     return mysqli_fetch_array($result, MYSQLI_ASSOC)["title"];
 }
@@ -171,7 +172,6 @@ function get_category_name_by_id($link, $id)
  */
 function add_new_lot($link, $lot)
 {
-    $category = get_category_id_by_name($link, $lot['category']);
     $user_id = $_SESSION["user"]["id"];
 
     $sql = "INSERT INTO lots (
@@ -189,15 +189,15 @@ function add_new_lot($link, $lot)
     NOW(), NULL, ?, ?, ?, ?, ?, ?, ?, ?
   )";
     $stmt = db_get_prepare_stmt($link, $sql, [
-    $user_id,
-    $category,
-    $lot["lot-date"],
-    $lot["lot-name"],
-    $lot["message"],
-    $lot["lot-img"],
-    $lot["lot-rate"],
-    $lot["lot-step"]
-  ]);
+        $user_id,
+        $lot["category"],
+        $lot["lot-date"],
+        $lot["lot-name"],
+        $lot["message"],
+        $lot["lot-img"],
+        $lot["lot-rate"],
+        $lot["lot-step"]
+    ]);
     mysqli_stmt_execute($stmt);
     return mysqli_insert_id($link);
 }
@@ -213,7 +213,7 @@ function check_user($link, $user_email)
 {
     $email = mysqli_real_escape_string($link, $user_email);
     $sql = 'SELECT * FROM users u
-            WHERE u.email = "'. $email .'"';
+            WHERE u.email = "' . $email . '"';
     $result = mysqli_query($link, $sql);
     $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : [];
     return $user;
@@ -233,12 +233,12 @@ function add_new_user($link, $form)
     NOW(), ?, ?, ?, ?, ?
   )";
     $stmt = db_get_prepare_stmt($link, $sql, [
-    $form["name"],
-    $form["email"],
-    $password,
-    $form["message"],
-    $form["user-img"]
-  ]);
+        $form["name"],
+        $form["email"],
+        $password,
+        $form["message"],
+        $form["user-img"] ?? ""
+    ]);
     mysqli_stmt_execute($stmt);
 }
 
@@ -257,15 +257,15 @@ function add_new_bet($link, $lot_id, $user_id, $bet)
     NOW(), ?, ?, ?
   )";
     $stmt = db_get_prepare_stmt($link, $sql, [
-    $lot_id,
-    $user_id,
-    $bet
-  ]);
+        $lot_id,
+        $user_id,
+        $bet
+    ]);
     mysqli_stmt_execute($stmt);
     if (mysqli_insert_id($link)) {
         $lot_id = mysqli_real_escape_string($link, $lot_id);
         $bet = mysqli_real_escape_string($link, $bet);
-        $sql = 'UPDATE lots SET price = "'. $bet .'" WHERE id = "'. $lot_id .'"';
+        $sql = 'UPDATE lots SET price = "' . $bet . '" WHERE id = "' . $lot_id . '"';
         mysqli_query($link, $sql);
     }
 }
@@ -282,7 +282,7 @@ function get_bets_by_lot($lot_id)
     $sql = 'SELECT u.name "user", b.lot_id,
     b.user_id, b.price, b.created_at FROM bets b
     JOIN users u ON b.user_id = u.id
-    WHERE b.lot_id = "'. $lot_id .'"
+    WHERE b.lot_id = "' . $lot_id . '"
     ORDER BY b.created_at DESC';
     $result = mysqli_query($link, $sql);
     $bets = get_array($result) ?? [];
@@ -305,7 +305,7 @@ function get_user_bets($link, $user_id)
     JOIN lots l ON b.lot_id = l.id
     JOIN users u ON l.user_id = u.id
     JOIN categories c ON l.category_id = c.id
-    WHERE b.user_id = "'. $user_id .'"
+    WHERE b.user_id = "' . $user_id . '"
     ORDER BY b.created_at DESC';
     $result = mysqli_query($link, $sql);
     return get_array($result);
@@ -368,7 +368,7 @@ function set_winner($link, $winner_id, $lot_id)
 {
     $winner_id = mysqli_real_escape_string($link, $winner_id);
     $lot_id = mysqli_real_escape_string($link, $lot_id);
-    $sql = 'UPDATE lots SET winner_id = "'. $winner_id .'" WHERE id = "'. $lot_id .'"';
+    $sql = 'UPDATE lots SET winner_id = "' . $winner_id . '" WHERE id = "' . $lot_id . '"';
     mysqli_query($link, $sql);
 }
 

@@ -1,13 +1,13 @@
 <?php
 require_once "initial.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
     $password_validity = false;
     $form = $_POST;
     $required_fields = ["email", "password"];
     $errors = check_required_fields($required_fields, $form);
-    $user = check_user($link, $form["email"]);
+    $user = isset($form["email"]) ? check_user($link, $form["email"]) : false;
 
     if ($user) {
         $password_validity = password_verify($form['password'], $user['password']);
@@ -23,13 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["user"] = $user;
         header("Location: index.php");
         exit();
-    } else {
-        $content = include_template("login.php", ["categories" => $categories,
-      "errors" => $errors, "form" => $form]);
-        $title = "Ошибка";
-        $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
-        print($layout);
     }
+
+    $content = include_template("login.php", ["categories" => $categories, "errors" => $errors, "form" => $form]);
+    $title = "Ошибка";
+    $layout = get_layout($content, $title, $categories, $user_name, $categories_block);
+    print($layout);
+
 } else {
     if (isset($_SESSION["user"])) {
         header("Location: index.php");
